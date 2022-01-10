@@ -1,4 +1,4 @@
-package com.example.mylife.view;
+package com.example.mylife.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
