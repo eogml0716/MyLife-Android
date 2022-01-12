@@ -15,6 +15,7 @@ public interface RetrofitInterface {
                       @Field("password") String password,
                       @Field("name") String name);
 
-    // 검색
+    // 로그인
+    
 
 }
