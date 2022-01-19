@@ -15,7 +15,10 @@ public interface RetrofitInterface {
                       @Field("password") String password,
                       @Field("name") String name);
 
-    // 로그인
-    
+    // 일반 로그인
+
+    // 자동 로그인
+
+    // 로그아웃
 
 }

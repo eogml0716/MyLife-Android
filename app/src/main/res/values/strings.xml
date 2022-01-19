@@ -3,8 +3,64 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <!--  SharedPreferences 관련 -->
+    <string name="main_storage_key">auto</string>
+    <string name="login_type">login_type</string>
+    <string name="user_session">user_session</string>
+    <string name="user_idx">user_idx</string>
+    <string name="profile_image_idx">profile_image_idx</string>
+    <string name="profile_image_url">profile_image_url</string>
+    <string name="email">email</string>
+
+    <!-- 네트워크 통신 관련 -->
+    <string name="no_connected_network">"네트워크가 연결되어 있지 않습니다. \n네트워크 상태를 확인해주세요."</string>
+    <string name="network_not_stable">네트워크 연결이 불안정 합니다. 다시 시도해주세요.</string>
+
     <!-- 서버 통신 관련 -->
     <string name="default_server_url">http://15.164.0.56</string>
 
     <string name="loading_message">잠시만 기다려주세요.</string>
+
+    <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
+
+    <!-- [모든 요청] 서버 에러인 경우 다이얼로그에 보여줄 텍스트-->
+    <string name="server_error_title">서버 오류 발생</string>
+    <string name="server_error_message">서버 오류가 발생했습니다.\n잠시 후에 다시 시도해주세요.</string>
+
+    <!-- [모든 요청] 클라이언트 에러인 경우 다이얼로그에 보여줄 텍스트-->
+    <string name="client_error_title">예상치 못한 오류 발생</string>
+    <string name="client_error_message">예상치 못한 오류가 발생했습니다.\n잠시 후에 다시 시도해주세요.</string>
+
+    <string name="session_error_title">세션 만료</string>
+    <string name="session_error_message">세션이 만료되어 로그아웃 되었습니다.\n다시 로그인 해주세요.</string>
+
+    <!-- [로그인, 회원가입 요청 제외] 잘못된 세션을 보냈다는 서버 응답 메세지 -->
+    <string name="wrong_session_message">wrong user session id, need new login</string>
+    <!-- [로그인, 회원가입 요청 제외] 세션이 비어있다는 서버 응답 메세지 -->
+    <string name="session_empty_message">user session id not exist in header</string>
+
+    <!-- [회원가입 요청] 세션을 보냈다는 서버 응답 메세지  -->
+    <string name="exclude_cookie_message">exclude cookie, request again</string>
+    <!-- [회원가입 요청] 이미 가입한 사용자라는 서버 응답 메세지 -->
+    <string name="already_login">already login</string>
+    <!-- [회원가입 요청] 이메일, 비밀번호 정규식 -->
+    <string name="email_regex_failed">이메일 형식이 아닙니다. \n이메일을 다시 작성해주세요.</string>
+    <string name="password_regex_failed">비밀번호는 숫자, 문자, 특수문자 모두 포함 8~15자 입니다. </string>
+
+    <!-- [회원가입 요청] 이미 가입한 사용자라는 서버 응답 메세지 -->
+    <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
+    <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
+
+    <!-- [로그인 요청] 잘못된 사용자 세션을 보냈다는 서버 응답 메세지-->
+    <string name="wrong_session">wrong session, need new login</string>
+    <!-- [로그인 요청] 사용자 세션이 만료 됐다는 서버 응답 메세지 -->
+    <string name="session_expiration">session expiration, need new login</string>
+
+    <!--============================== 권한 설정 관련 ==============================-->
+    <string name="camera_permission_message">카메라를 사용하기 위해서는 권한이 필요합니다. 권한 설정을 해주세요.</string>
+    <string name="download_permission_message">사진을 저장하기 위해서는 저장소 권한이 필요합니다. 권한 설정을 해주세요.</string>
+    <string name="album_permission_message">갤러리를 보기 위해서는 저장소 권한이 필요합니다. 권한 설정을 해주세요.</string>
+    <string name="no_more_permission_message">필요한 권한을 거부 및 다시 묻지 않음으로 선택하셨습니다. 수동으로 권한 설정을 해주세요.</string>
+
 </resources>

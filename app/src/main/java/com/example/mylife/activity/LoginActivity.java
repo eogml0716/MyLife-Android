@@ -20,7 +20,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
     private final NetworkConnection networkConnection = NetworkConnection.getInstance();
     private DialogHelper dialogHelper = DialogHelper.getInstance();
-    
+
+    private String email, password, name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +42,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void bindView() {
-        /* findViewById */
+        /* 뷰 바인드 */
         tvMoveToSignUp = findViewById(R.id.tv_move_to_sign_up);
 
-        /* 클릭 이벤트 관련 */
+        /* 리스너 관련 */
         tvMoveToSignUp.setOnClickListener(this);
     }
 
