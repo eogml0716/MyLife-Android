@@ -18,6 +18,8 @@ import com.example.mylife.item.User;
 import com.example.mylife.util.DialogHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private final DialogHelper dialogHelper = DialogHelper.getInstance();
 
     private TextView tvMoveToLogin;
-    private EditText etEmail, etName, etPassword;
+    private TextInputLayout tilEmail, tilName, tilPassword;
     private Button btnSignUp;
 
     @Override
@@ -53,14 +55,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void bindView() {
         /* findViewById */
         tvMoveToLogin = findViewById(R.id.tv_move_to_login);
-        etEmail = findViewById(R.id.et_email);
-        etName = findViewById(R.id.et_name);
-        etPassword = findViewById(R.id.et_password);
+        tilEmail = findViewById(R.id.til_email);
+        tilPassword = findViewById(R.id.til_password);
+        tilName = findViewById(R.id.til_name);
         btnSignUp = findViewById(R.id.btn_sign_up);
 
         /* 클릭 이벤트 관련 */
-        btnSignUp = findViewById(R.id.btn_sign_up);
         tvMoveToLogin.setOnClickListener(this);
+        btnSignUp.setOnClickListener(this);
     }
 
     /**
@@ -71,19 +73,24 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         // TODO: 구글에서는 switch문을 권장했다가 if문을 권장하는 경우가 생성되었다는데.. 왜 switch문 쓰면 if문으로 바꾸라는 메시지를 줄까?
         if (btnSignUp.equals(v)) {
             // 이메일 정규식 체크
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getEditTextValue(etEmail)).matches()) {
-                dialogHelper.showConfirmDialog(this, dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.email_regex_failed));
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextInputLayoutString(tilEmail)).matches()) {
+                dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.email_regex_failed));
+                return;
+            }
+
+            if (getTextInputLayoutString(tilName) == null) {
+                dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.edittext_null));
                 return;
             }
 
             // 비밀번호 정규식 체크
-            if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$", getEditTextValue(etPassword))) {
-                dialogHelper.showConfirmDialog(this, dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.password_regex_failed));
+            if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$", getTextInputLayoutString(tilPassword))) {
+                dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.password_regex_failed));
                 return;
             }
 
             if (networkConnection.checkNetworkConnection(SignUpActivity.this) == TYPE_NOT_CONNECTED) {
-                dialogHelper.showConfirmDialog(this, dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
+                dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.no_connected_network));
             } else {
                 signupUser();
             }
@@ -98,11 +105,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
      * ------------------------------- category ?. 서버 통신 -------------------------------
      */
     private void signupUser() {
-        String email = getEditTextValue(etEmail);
-        String password = getEditTextValue(etPassword);
-        String name = getEditTextValue(etName);
+        String email = getTextInputLayoutString(tilEmail);
+        String password = getTextInputLayoutString(tilPassword);
+        String name = getTextInputLayoutString(tilName);
 
         Call<User> callSignup = retrofitHelper.getRetrofitInterFace().signup(email, password, name);
+        Log.d(TAG, "signupUser - email : " + email);
+        Log.d(TAG, "signupUser - password : " + password);
+        Log.d(TAG, "signupUser - name : " + name);
+
         callSignup.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
@@ -137,14 +148,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     /**
      * ------------------------------- category ?. 유틸리티 -------------------------------
      */
-    private String getEditTextValue(EditText editText) {
+    private String getTextInputLayoutString(TextInputLayout textInputLayout) {
         // 공백이 아닐 때 처리할 내용
-        if (editText.getText().toString().length() != 0) {
-            Log.d(TAG, "getEditTextValue - editText.getText().toString() : " + editText.getText().toString());
-            return editText.getText().toString();
+        if (textInputLayout.getEditText().getText().length() != 0) {
+            Log.d(TAG, "getEditTextValue - textInputLayout.getEditText().getText() : " + textInputLayout.getEditText().getText());
+            return textInputLayout.getEditText().getText().toString();
         }
         // 공백일 때 처리할 내용
-        Log.e(TAG, "getEditTextValue - editText.getText().toString() 공백일 때 : " + editText.getText().toString());
+        Log.e(TAG, "getEditTextValue - textInputLayout.getEditText().getText() 공백일 때 : " + textInputLayout.getEditText().getText());
         return null;
     }
 }

@@ -8,8 +8,11 @@ import com.example.mylife.api.RetrofitInterface;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -27,12 +30,18 @@ public class RetrofitHelper {
     }
 
     public static RetrofitInterface getRetrofitHelper() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         if (retrofit == null) {
-            retrofit = new Retrofit
-                    .Builder()
+            retrofit = new Retrofit.Builder()
                     .baseUrl(MyApplication.SERVER_URL)
                     .addConverterFactory(new NullOnEmptyConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
                     .build();
         }
         return retrofit.create(RetrofitInterface.class);

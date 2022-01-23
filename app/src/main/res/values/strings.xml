@@ -18,7 +18,7 @@
     <string name="network_not_stable">네트워크 연결이 불안정 합니다. 다시 시도해주세요.</string>
 
     <!-- 서버 통신 관련 -->
-    <string name="default_server_url">http://15.164.0.56</string>
+    <string name="default_server_url">https://rdh98.shop/</string>
 
     <string name="loading_message">잠시만 기다려주세요.</string>
 
@@ -47,6 +47,8 @@
     <!-- [회원가입 요청] 이메일, 비밀번호 정규식 -->
     <string name="email_regex_failed">이메일 형식이 아닙니다. \n이메일을 다시 작성해주세요.</string>
     <string name="password_regex_failed">비밀번호는 숫자, 문자, 특수문자 모두 포함 8~15자 입니다. </string>
+
+    <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
 
     <!-- [회원가입 요청] 이미 가입한 사용자라는 서버 응답 메세지 -->
     <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>

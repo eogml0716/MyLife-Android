@@ -5,40 +5,43 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
     @SerializedName("user_idx")
-    @Expose
     private int userIdx;
 
     @SerializedName("email")
-    @Expose
     private String email;
 
     @SerializedName("password")
-    @Expose
     private String password;
 
     @SerializedName("name")
-    @Expose
     private String name; // 사용자명
 
     @SerializedName("profile_image_url")
-    @Expose
     private String imageUrl; // 유저 프로필 이미지 url
 
     @SerializedName("about_me")
-    @Expose
     private String aboutMe; // 유저 자기소개
 
     @SerializedName("create_date")
-    @Expose
     private String createDate;
 
     @SerializedName("update_date")
-    @Expose
     private String updateDate;
 
     @SerializedName("delete_date")
-    @Expose
     private String deleteDate;
+
+    public User(int userIdx, String email, String password, String name, String imageUrl, String aboutMe, String createDate, String updateDate, String deleteDate) {
+        this.userIdx = userIdx;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.aboutMe = aboutMe;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+        this.deleteDate = deleteDate;
+    }
 
     public int getUserIdx() {
         return userIdx;

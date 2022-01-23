@@ -85,7 +85,7 @@ public class SimpleConfirmDialog extends DialogFragment implements View.OnClickL
         switch (v.getId()) {
             case R.id.btn_confirm:
                 if (dialogListener != null) dialogListener.onConfirm(id);
-                // TODO : 이거 왜 있는건지 체크하기
+                // 확인 버튼 클릭 시, Activity를 종료 시키는 조건문, id = 0이면 Activity 종료 안함, id = -1이면 Activity 종료함
                 if (id == -1 && !getActivity().isFinishing()) {
                     Log.d(TAG, "onClick() - if (id == -1 && !getActivity().isFinishing())");
                     getActivity().finish(); // Activity 종료 id인 경우 DialogHelper 클래스에 정의되어 있다.
