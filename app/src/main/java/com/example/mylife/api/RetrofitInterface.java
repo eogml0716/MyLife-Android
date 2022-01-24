@@ -12,15 +12,23 @@ import retrofit2.http.POST;
 public interface RetrofitInterface {
     // 회원가입
     @FormUrlEncoded
-    @POST("signup")
+    @POST("/signup")
     Call<User> signup(@Field("email") String email,
                       @Field("password") String password,
                       @Field("name") String name);
 
     // 일반 로그인
+    @FormUrlEncoded
+    @POST("/signin/general")
+    Call<User> generalLogin(@Field("email") String email,
+                            @Field("password") String password);
 
-    // 자동 로그인
+    // TODO: 자동 로그인
 
-    // 로그아웃
+    // TODO: 네이버 로그인
+
+    // TODO: 카카오 로그인
+
+    // TODO: 로그아웃
 
 }

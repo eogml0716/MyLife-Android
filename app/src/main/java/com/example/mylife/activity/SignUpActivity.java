@@ -3,6 +3,7 @@ package com.example.mylife.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.example.mylife.item.User;
 import com.example.mylife.util.DialogHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -72,19 +75,23 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         // TODO: 구글에서는 switch문을 권장했다가 if문을 권장하는 경우가 생성되었다는데.. 왜 switch문 쓰면 if문으로 바꾸라는 메시지를 줄까?
         if (btnSignUp.equals(v)) {
+            String email = getTextInputLayoutString(tilEmail);
+            String name = getTextInputLayoutString(tilName);
+            String password = getTextInputLayoutString(tilPassword);
+
             // 이메일 정규식 체크
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextInputLayoutString(tilEmail)).matches()) {
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.email_regex_failed));
                 return;
             }
 
-            if (getTextInputLayoutString(tilName) == null) {
+            if (name == null) {
                 dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.edittext_null));
                 return;
             }
 
-            // 비밀번호 정규식 체크
-            if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$", getTextInputLayoutString(tilPassword))) {
+            // 비밀번호 정규식 체크 (숫자, 영문자, 특수문자 포함 8자~15자)
+            if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$", password)) {
                 dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.password_regex_failed));
                 return;
             }
@@ -92,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (networkConnection.checkNetworkConnection(SignUpActivity.this) == TYPE_NOT_CONNECTED) {
                 dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.no_connected_network));
             } else {
-                signupUser();
+                signupUser(email, name, password);
             }
         } else if (tvMoveToLogin.equals(v)) {
             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
@@ -104,11 +111,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     /**
      * ------------------------------- category ?. 서버 통신 -------------------------------
      */
-    private void signupUser() {
-        String email = getTextInputLayoutString(tilEmail);
-        String password = getTextInputLayoutString(tilPassword);
-        String name = getTextInputLayoutString(tilName);
-
+    private void signupUser(String email, String name, String password) {
         Call<User> callSignup = retrofitHelper.getRetrofitInterFace().signup(email, password, name);
         Log.d(TAG, "signupUser - email : " + email);
         Log.d(TAG, "signupUser - password : " + password);
@@ -129,6 +132,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         break;
 
                     case 200:
+                        // TODO: R.string.내용 이렇게 하면 int값으로 들어가는구나 신기하네
+                        // TODO: 스낵바 메시지 안 뜸
+                        showSnackBar(SignUpActivity.this, R.string.signup_success);
                         // 로그인 화면으로 이동
                         Intent toLoginIntent = new Intent(SignUpActivity.this, LoginActivity.class);
                         startActivity(toLoginIntent);
@@ -157,5 +163,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         // 공백일 때 처리할 내용
         Log.e(TAG, "getEditTextValue - textInputLayout.getEditText().getText() 공백일 때 : " + textInputLayout.getEditText().getText());
         return null;
+    }
+
+    public void showSnackBar(Activity activity, int message){
+        View rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        Snackbar.make(rootView, message, BaseTransientBottomBar.LENGTH_INDEFINITE).show();
     }
 }

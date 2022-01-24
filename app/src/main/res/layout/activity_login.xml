@@ -52,14 +52,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="이메일"
-        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/til_password"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toEndOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/guideline5">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email"
+            android:id="@+id/tiet_email"
+            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -71,14 +71,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="비밀번호"
-        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toEndOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/til_email" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_password"
+            android:id="@+id/tiet_password"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>

@@ -17,7 +17,7 @@ public class User {
     private String name; // 사용자명
 
     @SerializedName("profile_image_url")
-    private String imageUrl; // 유저 프로필 이미지 url
+    private String profileImageUrl; // 유저 프로필 이미지 url
 
     @SerializedName("about_me")
     private String aboutMe; // 유저 자기소개
@@ -30,18 +30,6 @@ public class User {
 
     @SerializedName("delete_date")
     private String deleteDate;
-
-    public User(int userIdx, String email, String password, String name, String imageUrl, String aboutMe, String createDate, String updateDate, String deleteDate) {
-        this.userIdx = userIdx;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.aboutMe = aboutMe;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-        this.deleteDate = deleteDate;
-    }
 
     public int getUserIdx() {
         return userIdx;
@@ -75,12 +63,12 @@ public class User {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getAboutMe() {

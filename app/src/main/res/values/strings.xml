@@ -9,9 +9,9 @@
     <string name="login_type">login_type</string>
     <string name="user_session">user_session</string>
     <string name="user_idx">user_idx</string>
-    <string name="profile_image_idx">profile_image_idx</string>
-    <string name="profile_image_url">profile_image_url</string>
     <string name="email">email</string>
+    <string name="name">name</string>
+    <string name="profile_image_url">profile_image_url</string>
 
     <!-- 네트워크 통신 관련 -->
     <string name="no_connected_network">"네트워크가 연결되어 있지 않습니다. \n네트워크 상태를 확인해주세요."</string>
@@ -50,6 +50,8 @@
 
     <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
 
+    <string name="signup_success">회원가입이 완료되었습니다.</string>
+
     <!-- [회원가입 요청] 이미 가입한 사용자라는 서버 응답 메세지 -->
     <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
     <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
@@ -58,6 +60,8 @@
     <string name="wrong_session">wrong session, need new login</string>
     <!-- [로그인 요청] 사용자 세션이 만료 됐다는 서버 응답 메세지 -->
     <string name="session_expiration">session expiration, need new login</string>
+
+    <string name="login_success">정상적으로 로그인 되었습니다.</string>
 
     <!--============================== 권한 설정 관련 ==============================-->
     <string name="camera_permission_message">카메라를 사용하기 위해서는 권한이 필요합니다. 권한 설정을 해주세요.</string>
