@@ -74,4 +74,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
+    // CircleImageView
+    def circle_image_version = "3.1.0"
+    implementation "de.hdodenhof:circleimageview:$circle_image_version"
 }

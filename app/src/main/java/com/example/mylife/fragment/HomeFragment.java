@@ -15,6 +15,7 @@ import com.example.mylife.R;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+// TODO: item_post 너무 무식하게 margin 준 거 같은데 비율에 맞게 margin을 주는 방법은 없을까?
 public class HomeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

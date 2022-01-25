@@ -12,10 +12,10 @@ import com.example.mylife.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PostFragment#newInstance} factory method to
+ * Use the {@link PostingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PostFragment extends Fragment {
+public class PostingFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class PostFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PostFragment() {
+    public PostingFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class PostFragment extends Fragment {
      * @return A new instance of fragment PostFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PostFragment newInstance(String param1, String param2) {
-        PostFragment fragment = new PostFragment();
+    public static PostingFragment newInstance(String param1, String param2) {
+        PostingFragment fragment = new PostingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class PostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false);
+        return inflater.inflate(R.layout.fragment_posting, container, false);
     }
 }

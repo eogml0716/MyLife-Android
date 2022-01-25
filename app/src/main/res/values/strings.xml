@@ -13,14 +13,31 @@
     <string name="name">name</string>
     <string name="profile_image_url">profile_image_url</string>
 
-    <!-- 네트워크 통신 관련 -->
+    <!-- [공통] -->
+    <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
+
+    <!-- [네트워크 통신] -->
     <string name="no_connected_network">"네트워크가 연결되어 있지 않습니다. \n네트워크 상태를 확인해주세요."</string>
     <string name="network_not_stable">네트워크 연결이 불안정 합니다. 다시 시도해주세요.</string>
 
-    <!-- 서버 통신 관련 -->
+    <!-- [서버 통신] -->
     <string name="default_server_url">https://rdh98.shop/</string>
 
     <string name="loading_message">잠시만 기다려주세요.</string>
+
+    <!-- [회원가입] -->
+    <string name="email_regex_failed">이메일 형식이 아닙니다. \n이메일을 다시 작성해주세요.</string>
+    <string name="password_regex_failed">비밀번호는 숫자, 문자, 특수문자 모두 포함 8~15자 입니다. </string>
+    <string name="signup_success">회원가입이 완료되었습니다.</string>
+
+    <!-- [로그인] -->
+    <string name="login_success">정상적으로 로그인 되었습니다.</string>
+    <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
+    <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
+
+    <!-- [게시글] -->
+    <string name="like">좋아요</string>
+    <string name="middle_point">·</string>
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 
@@ -44,24 +61,13 @@
     <string name="exclude_cookie_message">exclude cookie, request again</string>
     <!-- [회원가입 요청] 이미 가입한 사용자라는 서버 응답 메세지 -->
     <string name="already_login">already login</string>
-    <!-- [회원가입 요청] 이메일, 비밀번호 정규식 -->
-    <string name="email_regex_failed">이메일 형식이 아닙니다. \n이메일을 다시 작성해주세요.</string>
-    <string name="password_regex_failed">비밀번호는 숫자, 문자, 특수문자 모두 포함 8~15자 입니다. </string>
 
-    <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
-
-    <string name="signup_success">회원가입이 완료되었습니다.</string>
-
-    <!-- [회원가입 요청] 이미 가입한 사용자라는 서버 응답 메세지 -->
-    <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
-    <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
 
     <!-- [로그인 요청] 잘못된 사용자 세션을 보냈다는 서버 응답 메세지-->
     <string name="wrong_session">wrong session, need new login</string>
     <!-- [로그인 요청] 사용자 세션이 만료 됐다는 서버 응답 메세지 -->
     <string name="session_expiration">session expiration, need new login</string>
 
-    <string name="login_success">정상적으로 로그인 되었습니다.</string>
 
     <!--============================== 권한 설정 관련 ==============================-->
     <string name="camera_permission_message">카메라를 사용하기 위해서는 권한이 필요합니다. 권한 설정을 해주세요.</string>
