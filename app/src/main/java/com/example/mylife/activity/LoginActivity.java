@@ -34,6 +34,14 @@ import static com.example.mylife.MyApplication.USER_NAME;
 import static com.example.mylife.MyApplication.PROFILE_IMAGE_URL;
 import static com.example.mylife.util.NetworkConnection.TYPE_NOT_CONNECTED;
 
+/**
+ * 로그인 화면
+ *
+ * 기능
+ * 1. 일반 로그인
+ * 2. TODO : 네이버 로그인
+ * 3. TODO : 카카오 로그인
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = "LoginActivity";
     private TextView tvMoveToSignUp;

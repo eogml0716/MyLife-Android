@@ -60,7 +60,7 @@
             android:textColor="@color/black"
             android:textSize="10sp" />
 
-        <ImageButton
+        <android.widget.ImageButton
             android:id="@+id/ib_threedots"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
+        <android.widget.ImageView
             android:id="@+id/iv_post"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -191,7 +191,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.05" />
 
-        <ImageView
+        <android.widget.ImageView
             android:id="@+id/iv_comment"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -221,7 +221,7 @@
             app:layout_constraintWidth_percent="0.08"
             tools:text="0" />
 
-        <ImageView
+        <android.widget.ImageView
             android:id="@+id/iv_share"
             android:layout_width="0dp"
             android:layout_height="0dp"

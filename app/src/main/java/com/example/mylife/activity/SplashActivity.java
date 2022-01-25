@@ -13,8 +13,8 @@ import com.example.mylife.R;
  * 로딩화면
  *
  * 기능
- * 1. 네트워크 연결 체크 - X
- * 2. 자동 로그인 - X
+ * 1. TODO : 네트워크 연결 체크
+ * 2. TODO : 자동 로그인
  */
 public class SplashActivity extends AppCompatActivity {
     private final String TAG = "SplashActivity";

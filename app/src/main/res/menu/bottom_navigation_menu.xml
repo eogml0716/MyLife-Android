@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/HOME"
+        android:icon="@drawable/ic_home"
+        android:title="@string/bnv_menu_home"/>
+    <item
+        android:id="@+id/SEARCH"
+        android:icon="@drawable/ic_search"
+        android:title="@string/bnv_menu_search"/>
+    <item
+        android:id="@+id/POSTING"
+        android:icon="@drawable/ic_posting"
+        android:title="@string/bnv_menu_posting"/>
+    <item
+        android:id="@+id/NOTIFICATION"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/bnv_menu_notification"/>
+    <item
+        android:id="@+id/MYPAGE"
+        android:icon="@drawable/ic_account"
+        android:title="@string/bnv_menu_my_page"/>
+</menu>

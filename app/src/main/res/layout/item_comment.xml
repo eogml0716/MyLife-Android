@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_comment_top"
+        android:id="@+id/cl_top"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -16,14 +16,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/cl_reply_contents">
+        app:layout_constraintBottom_toTopOf="@+id/cl_middle">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user_profile"
+            android:id="@+id/iv_profile"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/tv_user_nickname"
+            app:layout_constraintEnd_toStartOf="@id/tv_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,13 +33,13 @@
             android:src="@drawable/user_sample_image" />
 
         <TextView
-            android:id="@+id/tv_user_nickname"
+            android:id="@+id/tv_name"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_user_profile"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.35"
             tools:text="유저 아이디"
@@ -48,17 +48,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_reply_contents"
+        android:id="@+id/cl_middle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="37dp"
-        app:layout_constraintTop_toBottomOf="@+id/cl_comment_top"
-        app:layout_constraintBottom_toTopOf="@+id/cl_variety_reply">
+        app:layout_constraintTop_toBottomOf="@+id/cl_top"
+        app:layout_constraintBottom_toTopOf="@+id/cl_bottom">
 
         <TextView
-            android:id="@+id/tv_reply_contents"
+            android:id="@+id/tv_contents"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="안녕하세요. 댓글 입니다."
@@ -72,7 +72,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_variety_reply"
+        android:id="@+id/cl_bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="3dp"
         android:layout_marginStart="44dp"
-        app:layout_constraintTop_toBottomOf="@+id/cl_reply_contents"
+        app:layout_constraintTop_toBottomOf="@+id/cl_middle"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
@@ -90,7 +90,7 @@
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/view_like_container"
+            app:layout_constraintEnd_toStartOf="@id/cl_like"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
             tools:text="업로드 날짜"
@@ -98,7 +98,7 @@
             android:textSize="10sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/view_like_container"
+            android:id="@+id/cl_like"
             android:layout_width="26dp"
             android:layout_height="21dp"
             android:layout_marginStart="5dp"
@@ -110,7 +110,7 @@
             app:layout_constraintWidth_percent="0.07">
 
             <CheckBox
-                android:id="@+id/cb_heart_reply"
+                android:id="@+id/cb_heart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/cb_like"
@@ -131,14 +131,14 @@
             android:layout_gravity="center"
             android:layout_marginStart="1dp"
             app:layout_constraintWidth_percent="0.05"
-            app:layout_constraintStart_toEndOf="@+id/view_like_container"
+            app:layout_constraintStart_toEndOf="@+id/cl_like"
             tools:text="0"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ImageButton
+        <android.widget.ImageButton
             android:id="@+id/ib_threedots_reply"
             android:layout_width="0dp"
             android:layout_height="0dp"

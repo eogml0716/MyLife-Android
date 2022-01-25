@@ -16,6 +16,13 @@
     <!-- [공통] -->
     <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
 
+    <!-- [BottomNavigationMenu] -->
+    <string name="bnv_menu_home">홈</string>
+    <string name="bnv_menu_search">검색</string>
+    <string name="bnv_menu_posting">포스팅</string>
+    <string name="bnv_menu_notification">알림</string>
+    <string name="bnv_menu_my_page">마이페이지</string>
+
     <!-- [네트워크 통신] -->
     <string name="no_connected_network">"네트워크가 연결되어 있지 않습니다. \n네트워크 상태를 확인해주세요."</string>
     <string name="network_not_stable">네트워크 연결이 불안정 합니다. 다시 시도해주세요.</string>
@@ -38,6 +45,13 @@
     <!-- [게시글] -->
     <string name="like">좋아요</string>
     <string name="middle_point">·</string>
+
+    <!-- [댓글] -->
+    <string name="comment">댓글</string>
+    <string name="comment_registration">등록</string>
+    <string name="latest_order">최신순</string>
+    <string name="registration_order">등록순</string>
+    <string name="comment_input_guide">댓글을 입력해주세요.</string>
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 
