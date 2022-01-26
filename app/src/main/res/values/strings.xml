@@ -38,6 +38,8 @@
     <string name="signup_success">회원가입이 완료되었습니다.</string>
 
     <!-- [로그인] -->
+    <string name="login_email">이메일</string>
+    <string name="login_password">비밀번호</string>
     <string name="login_success">정상적으로 로그인 되었습니다.</string>
     <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
     <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
@@ -45,6 +47,7 @@
     <!-- [게시글] -->
     <string name="like">좋아요</string>
     <string name="middle_point">·</string>
+    <string name="post_contents_guide">원하는 내용을 작성해주세요!, 글자 수는 500자로 제한됩니다.</string>
 
     <!-- [댓글] -->
     <string name="comment">댓글</string>

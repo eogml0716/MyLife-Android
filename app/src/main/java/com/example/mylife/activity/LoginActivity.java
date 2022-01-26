@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.mylife.R;
 import com.example.mylife.item.User;
 import com.example.mylife.util.DialogHelper;
+import com.example.mylife.util.MethodHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private final RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
     private final NetworkConnection networkConnection = NetworkConnection.getInstance();
     private final DialogHelper dialogHelper = DialogHelper.getInstance();
+    private final MethodHelper methodHelper = MethodHelper.getInstance();
 
     private TextInputLayout tilEmail, tilPassword;
     private Button btnLogin;
@@ -88,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
             finish();
         } else if (btnLogin.equals(v)) {
-            String email = getTextInputLayoutString(tilEmail);
-            String password = getTextInputLayoutString(tilPassword);
+            String email = methodHelper.getTextInputLayoutString(TAG, tilEmail);
+            String password = methodHelper.getTextInputLayoutString(TAG, tilPassword);
 
             if (networkConnection.checkNetworkConnection(LoginActivity.this) == TYPE_NOT_CONNECTED) {
                 dialogHelper.showConfirmDialog(this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.no_connected_network));
@@ -154,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d(TAG, "login - profileImageUrl : " + profileImageUrl);
 
                         // TODO: 스낵바 메시지 안 뜸
-                        showSnackBar(LoginActivity.this, R.string.login_success);
+                        methodHelper.showSnackBar(TAG, LoginActivity.this, R.string.login_success);
 
                         // 메인 화면으로 이동
                         Intent toMainIntent = new Intent(LoginActivity.this, MainActivity.class);
@@ -175,19 +177,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * ------------------------------- category ?. 유틸리티 -------------------------------
      */
-    private String getTextInputLayoutString(TextInputLayout textInputLayout) {
-        // 공백이 아닐 때 처리할 내용
-        if (textInputLayout.getEditText().getText().length() != 0) {
-            Log.d(TAG, "getEditTextValue - textInputLayout.getEditText().getText() : " + textInputLayout.getEditText().getText());
-            return textInputLayout.getEditText().getText().toString();
-        }
-        // 공백일 때 처리할 내용
-        Log.e(TAG, "getEditTextValue - textInputLayout.getEditText().getText() 공백일 때 : " + textInputLayout.getEditText().getText());
-        return null;
-    }
-
-    public void showSnackBar(Activity activity, int message){
-        View rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
-        Snackbar.make(rootView, message, BaseTransientBottomBar.LENGTH_INDEFINITE).show();
-    }
 }
