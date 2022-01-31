@@ -8,10 +8,11 @@
     tools:context=".fragment.HomeFragment">
 
     <ImageView
+        android:id="@+id/iv_upload_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="30dp"
-        android:background="@drawable/ic_upload_image"
+        android:background="@drawable/ic_basic_null_image"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +35,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:id="@+id/til_text"
+        android:id="@+id/til_contents"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -47,7 +48,7 @@
         app:counterMaxLength="500">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_text"
+            android:id="@+id/tiet_contents"
             android:inputType="text"
             android:hint="@string/post_contents_guide"
             android:layout_width="match_parent"

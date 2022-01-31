@@ -15,6 +15,8 @@
 
     <!-- [공통] -->
     <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
+    <string name="image_null">이미지를 등록해주세요.</string>
+    <string name="uploading">업로드 중 입니다.</string>
 
     <!-- [BottomNavigationMenu] -->
     <string name="bnv_menu_home">홈</string>

@@ -105,11 +105,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * ------------------------------- category ?. 서버 통신 -------------------------------
      */
     private void login(String email, String password) {
-        Call<User> callGeneralLogin = retrofitHelper.getRetrofitInterFace().generalLogin(email, password);
+        Call<User> callSigninGeneral = retrofitHelper.getRetrofitInterFace().signinGeneral(email, password);
         Log.d(TAG, "login - email : " + email);
         Log.d(TAG, "login - password : " + password);
 
-        callGeneralLogin.enqueue(new Callback<User>() {
+        callSigninGeneral.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 switch (response.code()) {

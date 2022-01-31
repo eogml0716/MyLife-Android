@@ -2,6 +2,7 @@ package com.example.mylife.util;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mylife.R;
@@ -29,6 +30,7 @@ public class DialogHelper {
      * ------------------------------- category 1. 로딩 다이얼로그 -------------------------------
      */
     // (1) 로딩 다이얼로그
+    // TODO: String만 받게 만들어서 string.xml에 있는 문자열을 못 가져오는데 @Nonull이랑 @Nullable 써서 파라미터 수정해보기
     public void showLoadingDialog(AppCompatActivity activity, String message) {
         if (loadingDialog == null) loadingDialog = new DialogLoading();
         Bundle bundle = new Bundle();
