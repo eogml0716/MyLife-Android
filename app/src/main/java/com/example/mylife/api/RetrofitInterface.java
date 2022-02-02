@@ -48,7 +48,11 @@ public interface RetrofitInterface {
      */
     // TODO: 게시글 리스트 가져오기 (무한 스크롤링)
     @GET("/read/posts")
-    Call<Post> readPosts();
+    Call<Post> readPosts(@Header("Cookie") String session,
+                         @Query("user_idx") int user_idx,
+                         @Query("page") int page,
+                         @Query("limit") int limit);
+
     // TODO: 댓글 리스트 가져오기 (무한 스크롤링)
     @GET("/read/comments")
     Call<Comment> readComments();
@@ -78,7 +82,13 @@ public interface RetrofitInterface {
     // TODO: 게시글 수정
     @FormUrlEncoded
     @HTTP(method = "PUT", path = "/update/post", hasBody = true)
-    Call<Post> updatePost();
+    Call<Post> updatePost(@Header("Cookie") String session,
+                          @Field("board_idx") int boardIdx,
+                          @Field("user_idx") int userIdx,
+                          @Field("image") String image,
+                          @Field("image_name") String imageName,
+                          @Field("contents") String contents,
+                          @Field("is_image_change") boolean isImageChange);
 
     // TODO: 댓글 수정
     @FormUrlEncoded
@@ -88,12 +98,16 @@ public interface RetrofitInterface {
     // TODO: 게시글 삭제
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/delete/post", hasBody = true)
-    Call<Void> deletePost();
+    Call<Void> deletePost(@Header("Cookie") String session,
+                          @Field("user_idx") int userIdx,
+                          @Field("board_idx") int boardIdx);
 
     // TODO: 댓글 삭제
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/delete/comment", hasBody = true)
-    Call<Void> deleteComment();
+    Call<Void> deleteComment(@Header("Cookie") String session,
+                             @Field("user_idx") int userIdx,
+                             @Field("comment_idx") int commentIdx);
 
     // TODO: 게시글 좋아요
     @FormUrlEncoded

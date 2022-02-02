@@ -127,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // 회원인 경우. 유저 정보를 SharedPreference에 저장한 후 메인 화면으로 이동한다.
                         // SharedPreference에 저장하는 유저 정보 : 로그인 타입, 유저 세션, 유저 인덱스, 유저 이메일, 유저 닉네임, 유저 프로필 이미지 URL
                         String userSession = response.headers().get("Set-Cookie");
+                        assert response.body() != null;
                         int userIdx = response.body().getUserIdx();
                         String email = response.body().getEmail();
                         String name = response.body().getName();

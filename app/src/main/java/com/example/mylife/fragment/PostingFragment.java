@@ -59,7 +59,14 @@ import static com.example.mylife.MyApplication.USER_IDX;
 import static com.example.mylife.MyApplication.USER_SESSION;
 import static com.example.mylife.util.NetworkConnection.TYPE_NOT_CONNECTED;
 
-
+/**
+ * 게시글 작성 화면
+ *
+ * 기능
+ * 1. 게시글 이미지 선택
+ * 2. 게시글 작성
+ * 3. 업로드
+ */
 public class PostingFragment extends Fragment implements View.OnClickListener {
     private final String TAG = "PostingFragment";
     private final RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
