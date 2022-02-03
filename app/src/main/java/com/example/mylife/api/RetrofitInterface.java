@@ -35,7 +35,11 @@ public interface RetrofitInterface {
     Call<User> signinGeneral(@Field("email") String email,
                             @Field("password") String password);
 
-    // TODO: 자동 로그인
+    // 자동 로그인
+    @FormUrlEncoded
+    @POST("/signin/auto")
+    Call<User> signinAuto(@Header("Cookie") String session,
+                          @Field("user_idx") int user_idx);
 
     // TODO: 네이버 로그인
 
@@ -46,7 +50,7 @@ public interface RetrofitInterface {
     /**
      * ------------------------------- category ?. 게시글 -------------------------------
      */
-    // TODO: 게시글 리스트 가져오기 (무한 스크롤링)
+    // 게시글 리스트 가져오기 (무한 스크롤링)
     @GET("/read/posts")
     Call<Post> readPosts(@Header("Cookie") String session,
                          @Query("user_idx") int user_idx,
@@ -79,7 +83,7 @@ public interface RetrofitInterface {
     @POST("/create/comment")
     Call<Void> createComment();
 
-    // TODO: 게시글 수정
+    // 게시글 수정
     @FormUrlEncoded
     @HTTP(method = "PUT", path = "/update/post", hasBody = true)
     Call<Post> updatePost(@Header("Cookie") String session,
@@ -95,7 +99,7 @@ public interface RetrofitInterface {
     @HTTP(method = "PUT", path = "/update/comment", hasBody = true)
     Call<Comment> updateComment();
 
-    // TODO: 게시글 삭제
+    // 게시글 삭제
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/delete/post", hasBody = true)
     Call<Void> deletePost(@Header("Cookie") String session,
@@ -109,13 +113,12 @@ public interface RetrofitInterface {
                              @Field("user_idx") int userIdx,
                              @Field("comment_idx") int commentIdx);
 
-    // TODO: 게시글 좋아요
+    // TODO: 좋아요
     @FormUrlEncoded
-    @HTTP(method = "PUT", path = "/update/like/post", hasBody = true)
-    Call<Void> updateLikePost();
-
-    // TODO: 댓글 좋아요
-    @FormUrlEncoded
-    @HTTP(method = "PUT", path = "/update/like/comment", hasBody = true)
-    Call<Void> updateLikeComment();
+    @HTTP(method = "PUT", path = "/update/like", hasBody = true)
+    Call<Void> updateLike(@Header("Cookie") String session,
+                              @Field("user_idx") int userIdx,
+                              @Field("type") String type,
+                              @Field("idx") int idx,
+                              @Field("is_like") boolean isLike);
 }

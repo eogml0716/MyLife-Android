@@ -136,6 +136,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                 updatePost(uploadImage, contents);
             }
         } else if (ibBack.equals(v)) {
+            Intent toMainIntent = new Intent(EditPostActivity.this, MainActivity.class);
+            startActivity(toMainIntent);
             finish();
         }
     }
@@ -157,6 +159,14 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             isImageChange = true;
         }
     });
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent toMainIntent = new Intent(EditPostActivity.this, MainActivity.class);
+        startActivity(toMainIntent);
+        finish();
+    }
 
     /**
      * ------------------------------- category ?. 서버 통신 -------------------------------
@@ -195,7 +205,9 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                             break;
 
                         case 200:
-                            // TODO: startActivityForResult 메소드 같은 거 사용해서 처리를 해주어야할 듯, 그냥 단순히 바뀐 경우엔 리사이클러뷰에 반영이 안됨, 일단 포폴용으로 쓰고 변경하기
+                            // TODO: 화면 갱신이 아니라 리사이클러뷰 아이템 갱신하는 방식으로 변경하기
+                            Intent toMainIntent = new Intent(EditPostActivity.this, MainActivity.class);
+                            startActivity(toMainIntent);
                             finish();
                             break;
                     }
@@ -233,6 +245,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
                         case 200:
                             // TODO: startActivityForResult 메소드 같은 거 사용해서 처리를 해주어야할 듯, 그냥 단순히 바뀐 경우엔 리사이클러뷰에 반영이 안됨, 일단 포폴용으로 쓰고 변경하기
+                            Intent toMainIntent = new Intent(EditPostActivity.this, MainActivity.class);
+                            startActivity(toMainIntent);
                             finish();
                             break;
                     }
