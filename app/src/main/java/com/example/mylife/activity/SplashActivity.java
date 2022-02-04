@@ -23,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.mylife.MyApplication.LOGIN_TYPE;
 import static com.example.mylife.MyApplication.PROFILE_IMAGE_URL;
 import static com.example.mylife.MyApplication.USER_EMAIL;
 import static com.example.mylife.MyApplication.USER_IDX;
@@ -64,7 +65,11 @@ public class SplashActivity extends AppCompatActivity {
             moveToLogin();
             return;
         }
-        autoLogin(); // 자동 로그인
+        if (LOGIN_TYPE.equals("auto")) {
+            autoLogin(); // 자동 로그인
+        } else {
+            moveToLogin();
+        }
     }
 
     private void moveToLogin() {
@@ -110,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
                         String profileImageUrl = response.body().getProfileImageUrl();
 
                         // TODO: 유저 로그인 타입은 자동 로그인, 네이버 로그인, 카카오 로그인 구현하면 다시 건드리기
-//                        LOGIN_TYPE = type;
+                        LOGIN_TYPE = "auto";
                         USER_SESSION = userSession;
                         USER_IDX = userIdx;
                         USER_EMAIL = email;
@@ -118,7 +123,7 @@ public class SplashActivity extends AppCompatActivity {
                         PROFILE_IMAGE_URL = profileImageUrl;
 
                         SharedPreferences.Editor editor = getSharedPreferences("auto", Activity.MODE_PRIVATE).edit();
-//                        editor.putInt(getString(R.string.login_type), type);
+                        editor.putString(getString(R.string.login_type), LOGIN_TYPE);
                         editor.putString(getString(R.string.user_session), userSession);
                         editor.putInt(getString(R.string.user_idx), userIdx);
                         editor.putString(getString(R.string.email), email);
@@ -126,11 +131,12 @@ public class SplashActivity extends AppCompatActivity {
                         editor.putString(getString(R.string.profile_image_url), profileImageUrl);
                         editor.apply();
 
-                        Log.d(TAG, "login - userSession : " + userSession);
-                        Log.d(TAG, "login - userIdx : " + userIdx);
-                        Log.d(TAG, "login - email : " + email);
-                        Log.d(TAG, "login - name : " + name);
-                        Log.d(TAG, "login - profileImageUrl : " + profileImageUrl);
+                        Log.d(TAG, "autoLogin - loginType : " + LOGIN_TYPE);
+                        Log.d(TAG, "autoLogin - userSession : " + userSession);
+                        Log.d(TAG, "autoLogin - userIdx : " + userIdx);
+                        Log.d(TAG, "autoLogin - email : " + email);
+                        Log.d(TAG, "autoLogin - name : " + name);
+                        Log.d(TAG, "autoLogin - profileImageUrl : " + profileImageUrl);
 
                         // TODO: 스낵바 메시지 안 뜸
                         methodHelper.showSnackBar(TAG, SplashActivity.this, R.string.login_success);

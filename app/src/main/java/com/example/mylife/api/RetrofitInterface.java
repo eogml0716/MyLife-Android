@@ -33,7 +33,7 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/signin/general")
     Call<User> signinGeneral(@Field("email") String email,
-                            @Field("password") String password);
+                             @Field("password") String password);
 
     // 자동 로그인
     @FormUrlEncoded
@@ -113,12 +113,21 @@ public interface RetrofitInterface {
                              @Field("user_idx") int userIdx,
                              @Field("comment_idx") int commentIdx);
 
-    // TODO: 좋아요
+    // 게시글 좋아요, TODO: type값 나중에 삭제하기(?) <- 체크해보고.. 일단 구현하기
     @FormUrlEncoded
     @HTTP(method = "PUT", path = "/update/like", hasBody = true)
-    Call<Void> updateLike(@Header("Cookie") String session,
+    Call<Post> updateLikePost(@Header("Cookie") String session,
                               @Field("user_idx") int userIdx,
                               @Field("type") String type,
                               @Field("idx") int idx,
                               @Field("is_like") boolean isLike);
+
+    // 댓글 좋아요, TODO: type값 나중에 삭제하기(?) <- 체크해보고.. 일단 구현하기
+    @FormUrlEncoded
+    @HTTP(method = "PUT", path = "/update/like", hasBody = true)
+    Call<Comment> updateLikeComment(@Header("Cookie") String session,
+                                    @Field("user_idx") int userIdx,
+                                    @Field("type") String type,
+                                    @Field("idx") int idx,
+                                    @Field("is_like") boolean isLike);
 }

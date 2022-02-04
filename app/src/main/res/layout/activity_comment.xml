@@ -160,7 +160,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/comment_registration"
+            android:text="@string/registration"
             android:textColor="@color/black"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"

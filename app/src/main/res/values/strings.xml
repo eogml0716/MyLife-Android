@@ -46,17 +46,31 @@
     <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
     <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
 
-    <!-- [게시글] -->
+    <!--============================== 게시글, 댓글, 좋아요 관련 ==============================-->
+    <!--[공통]-->
     <string name="like">좋아요</string>
     <string name="middle_point">·</string>
+    <string name="point3">⋮</string>
     <string name="post_contents_guide">문구 입력…</string>
+    <string name="like_plus">좋아요를 반영하였습니다.</string>
+    <string name="like_minus">좋아요를 취소하였습니다.</string>
+    <string name="registration">등록</string>
+    <string name="latest_order">최신순</string>
+    <string name="registration_order">등록순</string>
+
+    <!-- [게시글] -->
+    <string name="upload_post">게시글 업로드가 완료되었습니다.</string>
+    <string name="delete_post">게시글을 삭제 했습니다.</string>
 
     <!-- [댓글] -->
     <string name="comment">댓글</string>
-    <string name="comment_registration">등록</string>
-    <string name="latest_order">최신순</string>
-    <string name="registration_order">등록순</string>
     <string name="comment_input_guide">댓글을 입력해주세요.</string>
+    <string name="upload_comment_ing">댓글을 업로드 중 입니다.</string>
+    <string name="upload_comment">댓글을 업로드 했습니다.</string>
+    <string name="update_comment_ing">댓글을 수정 중 입니다.</string>
+    <string name="update_comment">댓글을 수정 했습니다.</string>
+    <string name="delete_comment">댓글을 삭제 했습니다.</string>
+
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 

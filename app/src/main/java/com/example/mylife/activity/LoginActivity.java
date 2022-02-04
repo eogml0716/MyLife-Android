@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.mylife.R;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private TextInputLayout tilEmail, tilPassword;
     private Button btnLogin;
+    private CheckBox cbAutoLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * ------------------------------- category 0. 최초 설정 -------------------------------
      */
-    private void setInitData() {
-    }
+    private void setInitData() { }
 
     private void bindView() {
         /* 뷰 바인드 */
@@ -74,10 +75,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tilEmail = findViewById(R.id.til_email);
         tilPassword = findViewById(R.id.til_password);
         btnLogin = findViewById(R.id.btn_login);
+        cbAutoLogin = findViewById(R.id.cb_auto_login);
 
         /* 리스너 관련 */
         tvMoveToSignUp.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        cbAutoLogin.setOnClickListener(this);
+
+        cbAutoLogin.setChecked(LOGIN_TYPE.equals("auto"));
     }
 
     /**
@@ -98,6 +103,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else {
                 login(email, password);
             }
+        } else if (cbAutoLogin.equals(v)) {
+            if (LOGIN_TYPE.equals("auto")) {
+                LOGIN_TYPE = "general";
+            } else {
+                LOGIN_TYPE = "auto";
+            }
+            SharedPreferences.Editor editor = getSharedPreferences("auto", Activity.MODE_PRIVATE).edit();
+            editor.putString(getString(R.string.login_type), LOGIN_TYPE);
+            editor.apply();
+            cbAutoLogin.setChecked(LOGIN_TYPE.equals("auto"));
         }
     }
 
@@ -134,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String profileImageUrl = response.body().getProfileImageUrl();
 
                         // TODO: 유저 로그인 타입은 자동 로그인, 네이버 로그인, 카카오 로그인 구현하면 다시 건드리기
-//                        LOGIN_TYPE = type;
+                        LOGIN_TYPE = "general";
                         USER_SESSION = userSession;
                         USER_IDX = userIdx;
                         USER_EMAIL = email;
@@ -142,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         PROFILE_IMAGE_URL = profileImageUrl;
 
                         SharedPreferences.Editor editor = getSharedPreferences("auto", Activity.MODE_PRIVATE).edit();
-//                        editor.putInt(getString(R.string.login_type), type);
+                        editor.putString(getString(R.string.login_type), LOGIN_TYPE);
                         editor.putString(getString(R.string.user_session), userSession);
                         editor.putInt(getString(R.string.user_idx), userIdx);
                         editor.putString(getString(R.string.email), email);
@@ -150,6 +165,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putString(getString(R.string.profile_image_url), profileImageUrl);
                         editor.apply();
 
+                        Log.d(TAG, "login - loginType : " + LOGIN_TYPE);
                         Log.d(TAG, "login - userSession : " + userSession);
                         Log.d(TAG, "login - userIdx : " + userIdx);
                         Log.d(TAG, "login - email : " + email);

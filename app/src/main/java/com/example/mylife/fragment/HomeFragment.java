@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -202,7 +203,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
                 break;
 
             case R.id.cb_heart:
-
+                if (networkConnection.checkNetworkConnection(getActivity()) == TYPE_NOT_CONNECTED) {
+                    dialogHelper.showConfirmDialog((AppCompatActivity) getActivity(), dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
+                } else {
+                    updateLikePost(posts.get(position).isLike(), position);
+                }
                 break;
 
             case R.id.iv_comment:
@@ -311,6 +316,69 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
                 dialogHelper.showConfirmDialog((AppCompatActivity) getActivity(), dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.network_not_stable));
                 Log.d(TAG, "deletePost - onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    // 좋아요 상태에 따라 좋아요 업데이트 해주는 메소드 : 중복되는 메소드<-???
+    private void updateLikePost(boolean isLike, int position) {
+        String type = "POST";
+        int boardIdx = posts.get(position).getBoardIdx();
+        Call<Post> callUpdateLike = retrofitHelper.getRetrofitInterFace().updateLikePost(USER_SESSION, USER_IDX, type, boardIdx, isLike);
+        callUpdateLike.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
+                switch (response.code()) {
+                    case 500:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+
+                        // 에러 발생 시 좋아요를 반영하지 않음
+                        posts.get(position).setLike(!isLike);
+                        postAdapter.notifyItemChanged(position);
+                        postAdapter.notifyItemRangeChanged(position, posts.size());
+
+                        dialogHelper.showConfirmDialog((AppCompatActivity) getActivity(), dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.server_error_message));
+                        break;
+
+                    case 400:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+
+                        // 에러 발생 시 좋아요를 반영하지 않음
+                        posts.get(position).setLike(!isLike);
+                        postAdapter.notifyItemChanged(position);
+                        postAdapter.notifyItemRangeChanged(position, posts.size());
+
+                        dialogHelper.showConfirmDialog((AppCompatActivity) getActivity(), dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.client_error_message));
+                        break;
+
+                    case 204:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        break;
+
+                    case 200:
+                        Log.d(TAG, "updateLikePost - onResponse : " + response);
+                        assert response.body() != null;
+                        boolean isLike = response.body().isLike();
+                        int likes = response.body().getLikes();
+
+                        posts.get(position).setLike(isLike);
+                        posts.get(position).setLikes(likes);
+                        postAdapter.notifyItemChanged(position);
+                        postAdapter.notifyItemRangeChanged(position, posts.size());
+
+                        if (isLike) {
+                            Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), R.string.like_plus, Snackbar.LENGTH_LONG).show();
+                        } else {
+                            Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), R.string.like_minus, Snackbar.LENGTH_LONG).show();
+                        }
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Post> call, @NotNull Throwable t) {
+                Log.d(TAG, "updateLikePost - onFailure : " + t.getMessage());
             }
         });
     }

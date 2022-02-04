@@ -44,7 +44,7 @@
             app:layout_constraintWidth_percent="0.35"
             tools:text="유저 아이디"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,7 +95,7 @@
             app:layout_constraintWidth_percent="0.2"
             tools:text="업로드 날짜"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_like"

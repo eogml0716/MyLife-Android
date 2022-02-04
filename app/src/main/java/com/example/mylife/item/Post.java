@@ -49,6 +49,8 @@ public class Post {
     @SerializedName("posts")
     ArrayList<Post> posts;
 
+    // TODO: liked_idx 값을 통해서 좋아요 등록, 삭제를 구현하려고 했는데 이게 지속적으로 변화하는 값이고 에러가 계속 터져서 좋아요 구현 방법을 변경함, 나중에 시간나면 에러 터지는 이유 찾기
+
     @SerializedName("is_like")
     private boolean isLike = false;
 
