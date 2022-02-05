@@ -163,8 +163,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent toMainIntent = new Intent(EditPostActivity.this, MainActivity.class);
-        startActivity(toMainIntent);
+//        Intent toMainIntent = new Intent(EditPostActivity.this, MainActivity.class);
+//        startActivity(toMainIntent);
         finish();
     }
 

@@ -157,8 +157,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         comments = new ArrayList<>();
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(false);
+        layoutManager.setStackFromEnd(false);
         commentAdapter = new CommentAdapter(this, comments, this);
         infiniteScrollListener = new InfiniteScrollListener(layoutManager, 4) {
             @Override
@@ -197,7 +197,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onClickItem(View view, int position) {
-        int commentIdx = comments.get(position).getBoardIdx();
+        int commentIdx = comments.get(position).getCommentIdx();
         clickedPosition = position;
 
         switch (view.getId()) {
@@ -273,16 +273,16 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             runOnUiThread(() -> {
                 tvLatestOrder.setTextColor(Color.parseColor("#000000"));
                 tvRegistrationOrder.setTextColor(Color.parseColor("#808080"));
-                layoutManager.setReverseLayout(true);
-                layoutManager.setStackFromEnd(true);
+                layoutManager.setReverseLayout(false);
+                layoutManager.setStackFromEnd(false);
                 rvComment.setLayoutManager(layoutManager);
             });
         } else if (tvRegistrationOrder.equals(v)) {
             runOnUiThread(() -> {
                 tvLatestOrder.setTextColor(Color.parseColor("#808080"));
                 tvRegistrationOrder.setTextColor(Color.parseColor("#000000"));
-                layoutManager.setReverseLayout(false);
-                layoutManager.setStackFromEnd(false);
+                layoutManager.setReverseLayout(true);
+                layoutManager.setStackFromEnd(true);
                 rvComment.setLayoutManager(layoutManager);
             });
         }
@@ -314,7 +314,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
             }
-        } else {
+        }
+
+        if (!isEdit) {
             // 댓글 수정하기 작업 중이 아닐 경우
             finish();
         }
@@ -324,7 +326,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
      * ------------------------------- category 3. 서버 통신 -------------------------------
      */
     private void loadComments(int page) {
-        Call<Comment> callReadComments = retrofitHelper.getRetrofitInterFace().readComments(USER_SESSION, USER_IDX, boardIdx, page, limit);
+        Call<Comment> callReadComments = retrofitHelper.getRetrofitInterFace().readComments(USER_SESSION, USER_IDX, page, limit, boardIdx);
         callReadComments.enqueue(new Callback<Comment>() {
             @Override
             public void onResponse(@NotNull Call<Comment> call, @NotNull Response<Comment> response) {
@@ -423,6 +425,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         isEdit = true;
                         etComment.setText("");
                         btnSend.setText("등록");
+                        // TODO: 이게 굳이 필요할까?, 클라이언트에서 일단 바꿔두고 나중에 새로고침하면 서버꺼 받아오고 대충 이런식인가
                         comments.get(position).setContents(contents);
                         commentAdapter.notifyItemChanged(position);
                         commentAdapter.notifyItemRangeChanged(position, comments.size());

@@ -70,7 +70,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder>  {
         Glide.with(context).load(posts.get(position).getProfileImageUrl()).into(holder.ivProfile);
         holder.tvName.setText(posts.get(position).getName());
         try {
-            holder.tvUploadDate.setText(posts.get(position).getUpdateDate());
+            holder.tvUploadDate.setText(posts.get(position).getCreateDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }

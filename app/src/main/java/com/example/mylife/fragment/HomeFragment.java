@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
 
         switch (view.getId()) {
             case R.id.tv_name:
-
+                // TODO: 해당 유저의 프로필로 넘어가기, 단 나를 클릭할 경우 나의 프로필로 넘어가기
                 break;
 
             case R.id.ib_threedots:
@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
                             toEditPostIntent.putExtra("contents", contents);
                             // TODO: 댓글 개수 늘어나거나 줄어들면 HomeFragment로 돌아왔을 때 반영해주기
                             startActivity(toEditPostIntent);
-                            requireActivity().finish();
+//                            requireActivity().finish();
                         } else if (selectedText.equals("삭제")) {
                             AlertDialog.Builder deleteDialogBuilder = new AlertDialog.Builder(mContext);
                             deleteDialogBuilder.setTitle("삭제 확인창").setMessage("정말로 삭제하시겠습니까?");

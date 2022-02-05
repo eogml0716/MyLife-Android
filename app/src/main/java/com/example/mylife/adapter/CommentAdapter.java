@@ -54,7 +54,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         Glide.with(context).load(comments.get(position).getProfileImageUrl()).into(holder.ivProfile);
         holder.tvName.setText(comments.get(position).getName());
         try {
-            holder.tvUploadDate.setText(comments.get(position).getUpdateDate());
+            holder.tvUploadDate.setText(comments.get(position).getCreateDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }

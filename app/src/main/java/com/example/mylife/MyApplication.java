@@ -3,6 +3,8 @@ package com.example.mylife;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 /**
  * 공통 변수, 함수 관리
  */
@@ -11,7 +13,7 @@ public class MyApplication extends Application {
     public static String SERVER_URL; // 서버의 URL
 
     // 유저 관련 변수
-    public static String LOGIN_TYPE, USER_SESSION, USER_NAME, USER_EMAIL, PROFILE_IMAGE_URL;
+    public static String LOGIN_TYPE, USER_SESSION, USER_NAME, USER_EMAIL, PROFILE_IMAGE_URL, USER_ABOUT_ME;
     public static int USER_IDX;
 
     @Override
@@ -24,11 +26,12 @@ public class MyApplication extends Application {
     private void loadUserSharedPref() {
         // TODO: 왜 main_storage_key라고 작명을 했을까?
         SharedPreferences userPref = getSharedPreferences(getString(R.string.main_storage_key), MODE_PRIVATE);
-        LOGIN_TYPE = userPref.getString(getString(R.string.login_type), null);
+        LOGIN_TYPE = userPref.getString(getString(R.string.login_type), "general");
         USER_SESSION = userPref.getString(getString(R.string.user_session), null);
         USER_IDX = userPref.getInt(getString(R.string.user_idx), 0);
         USER_EMAIL = userPref.getString(getString(R.string.email), null);
         USER_NAME = userPref.getString(getString(R.string.email), null);
         PROFILE_IMAGE_URL = userPref.getString(getString(R.string.profile_image_url), null);
+        USER_ABOUT_ME = userPref.getString(getString(R.string.about_me), null);
     }
 }

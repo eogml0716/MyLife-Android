@@ -12,6 +12,7 @@
     <string name="email">email</string>
     <string name="name">name</string>
     <string name="profile_image_url">profile_image_url</string>
+    <string name="about_me">about_me</string>
 
     <!-- [공통] -->
     <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>

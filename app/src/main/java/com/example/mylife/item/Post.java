@@ -157,16 +157,16 @@ public class Post {
         this.comments = comments;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getCreateDate() throws ParseException {
+        return customizeDate(createDate);
     }
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
-    public String getUpdateDate() throws ParseException {
-        return customizeDate(updateDate);
+    public String getUpdateDate() {
+        return updateDate;
     }
 
     public void setUpdateDate(String updateDate) {
