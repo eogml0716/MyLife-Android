@@ -57,9 +57,13 @@ public interface RetrofitInterface {
                          @Query("page") int page,
                          @Query("limit") int limit);
 
-    // TODO: 댓글 리스트 가져오기 (무한 스크롤링)
+    // 댓글 리스트 가져오기 (무한 스크롤링)
     @GET("/read/comments")
-    Call<Comment> readComments();
+    Call<Comment> readComments(@Header("Cookie") String session,
+                               @Query("user_idx") int user_idx,
+                               @Query("board_idx") int board_idx,
+                               @Query("page") int page,
+                               @Query("limit") int limit);
 
     // TODO: 게시글 가져오기 (1개)
     @GET("/read/post")
@@ -78,10 +82,13 @@ public interface RetrofitInterface {
                           @Field("image_name") String imageName,
                           @Field("contents") String contents);
 
-    // TODO: 댓글 추가
+    // 댓글 추가
     @FormUrlEncoded
     @POST("/create/comment")
-    Call<Void> createComment();
+    Call<Void> createComment(@Header("Cookie") String session,
+                             @Field("user_idx") int userIdx,
+                             @Field("board_idx") int boardIdx,
+                             @Field("contents") String contents);
 
     // 게시글 수정
     @FormUrlEncoded
@@ -94,10 +101,14 @@ public interface RetrofitInterface {
                           @Field("contents") String contents,
                           @Field("is_image_change") boolean isImageChange);
 
-    // TODO: 댓글 수정
+    // 댓글 수정
     @FormUrlEncoded
     @HTTP(method = "PUT", path = "/update/comment", hasBody = true)
-    Call<Comment> updateComment();
+    Call<Comment> updateComment(@Header("Cookie") String session,
+                                @Field("user_idx") int userIdx,
+                                @Field("board_idx") int boardIdx,
+                                @Field("comment_idx") int commentIdx,
+                                @Field("contents") String contents);
 
     // 게시글 삭제
     @FormUrlEncoded
@@ -106,7 +117,7 @@ public interface RetrofitInterface {
                           @Field("user_idx") int userIdx,
                           @Field("board_idx") int boardIdx);
 
-    // TODO: 댓글 삭제
+    // 댓글 삭제
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/delete/comment", hasBody = true)
     Call<Void> deleteComment(@Header("Cookie") String session,

@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+// TODO: 뭔가 괜히 만든 클래스 같음 그닥 필요없어지면 그냥 지우기
 public class MethodHelper {
     private final String TAG = "MethodHelper";
     private static MethodHelper methodHelper;
@@ -32,6 +33,7 @@ public class MethodHelper {
         return null;
     }
 
+    // TODO: 이거 잘 안 쓰게 되는디.... 삭제할까
     public void showSnackBar(String TagUsed, Activity activity, int message){
         View rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
         Snackbar.make(rootView, message, BaseTransientBottomBar.LENGTH_INDEFINITE).show();

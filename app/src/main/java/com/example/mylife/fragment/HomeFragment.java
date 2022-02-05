@@ -159,7 +159,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
 
             case R.id.ib_threedots:
                 int userIdx = posts.get(position).getUserIdx();
-                // TODO: 수정, 삭제의 경우 클라이언트, 서버에서 둘다 예외 처리 해줄 것
                 if (USER_IDX == userIdx) {
                     final List<String> dialogListItems = new ArrayList<>();
                     dialogListItems.add("수정");
@@ -324,8 +323,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
     private void updateLikePost(boolean isLike, int position) {
         String type = "POST";
         int boardIdx = posts.get(position).getBoardIdx();
-        Call<Post> callUpdateLike = retrofitHelper.getRetrofitInterFace().updateLikePost(USER_SESSION, USER_IDX, type, boardIdx, isLike);
-        callUpdateLike.enqueue(new Callback<Post>() {
+        Call<Post> callUpdateLikePost = retrofitHelper.getRetrofitInterFace().updateLikePost(USER_SESSION, USER_IDX, type, boardIdx, isLike);
+        callUpdateLikePost.enqueue(new Callback<Post>() {
             @Override
             public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
                 switch (response.code()) {
@@ -367,9 +366,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
                         postAdapter.notifyItemRangeChanged(position, posts.size());
 
                         if (isLike) {
-                            Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), R.string.like_plus, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(), R.string.like_plus, Snackbar.LENGTH_LONG).show();
                         } else {
-                            Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), R.string.like_minus, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(), R.string.like_minus, Snackbar.LENGTH_LONG).show();
                         }
 
                         break;

@@ -71,6 +71,7 @@
     <string name="update_comment">댓글을 수정 했습니다.</string>
     <string name="delete_comment">댓글을 삭제 했습니다.</string>
 
+    <string name="update_comment_backpressed">\'뒤로\' 버튼을 한번 더 누르면 수정을 취소합니다.</string>
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 
