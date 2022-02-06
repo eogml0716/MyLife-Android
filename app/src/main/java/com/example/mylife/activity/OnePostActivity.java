@@ -26,6 +26,7 @@ import com.example.mylife.util.DialogHelper;
 import com.example.mylife.util.MethodHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,6 @@ import retrofit2.Response;
 
 import static com.example.mylife.MyApplication.LOGIN_TYPE;
 import static com.example.mylife.MyApplication.PROFILE_IMAGE_URL;
-import static com.example.mylife.MyApplication.USER_ABOUT_ME;
 import static com.example.mylife.MyApplication.USER_EMAIL;
 import static com.example.mylife.MyApplication.USER_IDX;
 import static com.example.mylife.MyApplication.USER_NAME;
@@ -78,6 +78,7 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
      * ------------------------------- category 0. 최초 설정 -------------------------------
      */
     private void setInitData() {
+        userIdx = getIntent().getIntExtra("user_idx", 0);
         boardIdx = getIntent().getIntExtra("board_idx", 0);
 
         if (networkConnection.checkNetworkConnection(this) == TYPE_NOT_CONNECTED) {
@@ -120,10 +121,20 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onClick(View v) {
-        if (ivComment.equals(v)) {
+        if (tvName.equals(v)) {
+            if (USER_IDX == userIdx) {
+                // TODO: 나의 이름을 눌렀으면 MyFragment로 이동한다? -> 인스타그램 보니까 마이페이지로 와도 뒤로가기도 되고 잘 되던데, Fragment로 조작하는건가?
+                // TODO: 이거는 OtherUserPageActivity나 기타 Fragment로 구현될만한 것들은 Fragment로 구현되도록 바꿔야할듯?
+            } else {
+                // TODO: 다른 사람의 이름을 눌렀으면 OtherUserPageActivity로 이동한다.
+                Intent toOtherUserPageIntent = new Intent(this, OtherUserPageActivity.class);
+                toOtherUserPageIntent.putExtra("user_idx", userIdx);
+                startActivity(toOtherUserPageIntent);
+            }
+        } else if (ivComment.equals(v)) {
             Intent toCommentIntent = new Intent(this, CommentActivity.class);
             toCommentIntent.putExtra("board_idx", boardIdx);
-            // TODO: 댓글 개수 늘어나거나 줄어들면 HomeFragment로 돌아왔을 때 반영해주기
+            // TODO: 댓글 개수 늘어나거나 줄어들면 HomeFragment로 돌아왔을 때 반영해주기, 근데 이거 유튜브에서도 매번 새로고침해서 고치는건데 되긴하는건가
             startActivity(toCommentIntent);
         } else if (ibThreeDots.equals(v)) {
             if (USER_IDX == userIdx) {
@@ -161,7 +172,17 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
                 postDialog.show();
             }
         } else if (cbHeart.equals(v)) {
-
+            if (networkConnection.checkNetworkConnection(this) == TYPE_NOT_CONNECTED) {
+                dialogHelper.showConfirmDialog(this, dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
+            } else {
+                if (isLike) {
+                    isLike = false;
+                    updateLikePost(isLike);
+                } else {
+                    isLike = true;
+                    updateLikePost(isLike);
+                }
+            }
         } else if (ibBack.equals(v)) {
             finish();
         }
@@ -196,7 +217,7 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
                     case 200:
                         assert response.body() != null;
                         boardIdx = response.body().getBoardIdx();
-                        userIdx = response.body().getUserIdx();
+                        userIdx = response.body().getUserIdx(); // 글을 작성한 유저의 인덱스
                         name = response.body().getName();
                         profileImageUrl = response.body().getProfileImageUrl();
                         imageUrl = response.body().getImageUrl();
@@ -269,6 +290,61 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
                 dialogHelper.showConfirmDialog(OnePostActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.network_not_stable));
                 Log.d(TAG, "deletePost - onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    // 좋아요 상태에 따라 좋아요 업데이트 해주는 메소드 : 중복되는 메소드<-???
+    private void updateLikePost(boolean isLike) {
+        String type = "POST";
+        Call<Post> callUpdateLikePost = retrofitHelper.getRetrofitInterFace().updateLikePost(USER_SESSION, USER_IDX, type, boardIdx, isLike);
+        callUpdateLikePost.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
+                switch (response.code()) {
+                    case 500:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+
+                        // 에러 발생 시 좋아요를 반영하지 않음
+                        cbHeart.setChecked(!isLike);
+
+                        dialogHelper.showConfirmDialog(OnePostActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.server_error_message));
+                        break;
+
+                    case 400:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+
+                        // 에러 발생 시 좋아요를 반영하지 않음
+                        cbHeart.setChecked(!isLike);
+
+                        dialogHelper.showConfirmDialog(OnePostActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.client_error_message));
+                        break;
+
+                    case 204:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        break;
+
+                    case 200:
+                        Log.d(TAG, "updateLikePost - onResponse : " + response);
+                        assert response.body() != null;
+                        boolean isLike = response.body().isLike();
+                        int likes = response.body().getLikes();
+
+                        cbHeart.setChecked(isLike);
+                        tvLikeCount.setText(String.valueOf(likes));
+                        if (isLike) {
+                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.like_plus, Snackbar.LENGTH_LONG).show();
+                        } else {
+                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.like_minus, Snackbar.LENGTH_LONG).show();
+                        }
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Post> call, @NotNull Throwable t) {
+                Log.d(TAG, "updateLikePost - onFailure : " + t.getMessage());
             }
         });
     }

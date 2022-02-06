@@ -23,11 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mylife.R;
 import com.example.mylife.activity.CommentActivity;
 import com.example.mylife.activity.EditPostActivity;
+import com.example.mylife.activity.OtherUserPageActivity;
 import com.example.mylife.adapter.ItemClickListener;
 import com.example.mylife.adapter.PostAdapter;
 import com.example.mylife.item.Comment;
@@ -65,6 +67,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
 
     private SwipeRefreshLayout srRefresh;
     private ProgressBar pbLoading, pbInfiniteScroll; // 프로그래스 바
+    private TextView tvNoItem;
 
     private RecyclerView rvPost;
     private ArrayList<Post> posts;
@@ -76,7 +79,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
     // 페이징을 위한 변수 : 마지막 페이지인지 확인
     private final int limit = 5;
     private boolean isLast;
-
     public HomeFragment() {
         super(R.layout.fragment_home);
     }
@@ -101,6 +103,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
     }
 
     private void bindView(View v) {
+        tvNoItem = v.findViewById(R.id.tv_no_item);
         rvPost = v.findViewById(R.id.rv_post);
         pbLoading = v.findViewById(R.id.pb_loading);
         pbInfiniteScroll = v.findViewById(R.id.pb_infinite_scroll);
@@ -150,15 +153,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
      */
     @Override
     public void onClickItem(View view, int position) {
+        int userIdx = posts.get(position).getUserIdx();
         int boardIdx = posts.get(position).getBoardIdx();
 
         switch (view.getId()) {
             case R.id.tv_name:
-                // TODO: 해당 유저의 프로필로 넘어가기, 단 나를 클릭할 경우 나의 프로필로 넘어가기
+                if (USER_IDX == userIdx) {
+                    // TODO: 나의 이름을 눌렀으면 MyFragment로 이동한다? -> 인스타그램 보니까 마이페이지로 와도 뒤로가기도 되고 잘 되던데, Fragment로 조작하는건가?
+                    // TODO: 이거는 OtherUserPageActivity나 기타 Fragment로 구현될만한 것들은 Fragment로 구현되도록 바꿔야할듯?
+                } else {
+                    // TODO: 다른 사람의 이름을 눌렀으면 OtherUserPageActivity로 이동한다.
+                    Intent toOtherUserPageIntent = new Intent(mContext, OtherUserPageActivity.class);
+                    toOtherUserPageIntent.putExtra("user_idx", userIdx);
+                    startActivity(toOtherUserPageIntent);
+                }
                 break;
 
             case R.id.ib_threedots:
-                int userIdx = posts.get(position).getUserIdx();
                 if (USER_IDX == userIdx) {
                     final List<String> dialogListItems = new ArrayList<>();
                     dialogListItems.add("수정");
@@ -272,6 +283,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
                         posts.addAll(post.getPosts()); // 서버에서 응답받은 페이지의 리스트에 데이터 추가
                         int totalItemCount = posts.size();
                         postAdapter.notifyItemRangeInserted(startPosition, totalItemCount - startPosition); // 어뎁터에서 추가된 데이터 업데이트
+
+                        if (posts.size() == 0) {
+                            tvNoItem.setVisibility(View.VISIBLE);
+                            rvPost.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvNoItem.setVisibility(View.INVISIBLE);
+                            rvPost.setVisibility(View.VISIBLE);
+                        }
                         break;
                 }
             }

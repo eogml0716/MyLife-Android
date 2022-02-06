@@ -12,7 +12,6 @@
     <string name="email">email</string>
     <string name="name">name</string>
     <string name="profile_image_url">profile_image_url</string>
-    <string name="about_me">about_me</string>
 
     <!-- [공통] -->
     <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
@@ -73,6 +72,8 @@
     <string name="delete_comment">댓글을 삭제 했습니다.</string>
 
     <string name="update_comment_backpressed">\'뒤로\' 버튼을 한번 더 누르면 수정을 취소합니다.</string>
+
+    <string name="no_self_introduction">자기 소개가 없습니다.</string>
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 

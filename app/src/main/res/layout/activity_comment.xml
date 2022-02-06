@@ -105,6 +105,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.14" />
 
+    <!-- 게시글 리사이클러뷰의 경우에는 SwipeRefreshLayout 안에 TextView를 넣어도 됐는데 여긴 왜 안되지?-->
+    <TextView
+        android:id="@+id/tv_no_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="댓글이 없습니다."
+        android:textSize="36sp"
+        android:gravity="center"
+        tools:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/cl_middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline5"/>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/sr_refresh"
         android:layout_width="wrap_content"
@@ -116,18 +130,18 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingTop="10dp"
             android:paddingBottom="20dp"
             android:splitMotionEvents="false"
+            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/cl_comment_box"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_comment" />
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

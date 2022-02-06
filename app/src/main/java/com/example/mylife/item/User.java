@@ -22,6 +22,15 @@ public class User {
     @SerializedName("about_me")
     private String aboutMe; // 유저 자기소개
 
+    @SerializedName("post_count")
+    private int postCount; // 게시글 개수, TODO: posts라고 ArrayList에 이름을 지정을 해놔서 좀 복잡해졌네
+
+    @SerializedName("follower_count")
+    private int followerCount; // 팔로워 수
+
+    @SerializedName("following_count")
+    private int followingCount; // 팔로잉 수
+
     @SerializedName("create_date")
     private String createDate;
 
@@ -77,6 +86,30 @@ public class User {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public int getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(int postCount) {
+        this.postCount = postCount;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public int getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(int followingCount) {
+        this.followingCount = followingCount;
     }
 
     public String getCreateDate() {

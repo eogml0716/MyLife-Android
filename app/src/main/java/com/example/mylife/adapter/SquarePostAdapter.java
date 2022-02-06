@@ -70,7 +70,7 @@ public class SquarePostAdapter extends RecyclerView.Adapter<SquarePostAdapter.Sq
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return (posts == null) ? 0 : posts.size();
     }
 
     public class SquarePostHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

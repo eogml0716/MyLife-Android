@@ -71,7 +71,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return (comments == null) ? 0 : comments.size();
     }
 
     public class CommentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -61,7 +61,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressBar pbLoading, pbInfiniteScroll; // 프로그래스 바
 
     private ImageButton ibBack;
-    private TextView tvLatestOrder, tvRegistrationOrder;
+    private TextView tvLatestOrder, tvRegistrationOrder, tvNoItem;
     private EditText etComment;
     private Button btnSend;
 
@@ -107,6 +107,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         ibBack = findViewById(R.id.ib_back);
         tvLatestOrder = findViewById(R.id.tv_latest_order);
         tvRegistrationOrder = findViewById(R.id.tv_registration_order);
+        tvNoItem = findViewById(R.id.tv_no_item);
         etComment = findViewById(R.id.et_comment);
         btnSend = findViewById(R.id.btn_send);
         rvComment = findViewById(R.id.rv_comment);
@@ -358,6 +359,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         comments.addAll(comment.getComments()); // 서버에서 응답받은 페이지의 리스트에 데이터 추가
                         int totalItemCount = comments.size();
                         commentAdapter.notifyItemRangeInserted(startPosition, totalItemCount - startPosition); // 어뎁터에서 추가된 데이터 업데이트
+
+                        if (comments.size() == 0) {
+                            tvNoItem.setVisibility(View.VISIBLE);
+                            rvComment.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvNoItem.setVisibility(View.INVISIBLE);
+                            rvComment.setVisibility(View.VISIBLE);
+                        }
                         break;
                 }
             }
@@ -430,6 +439,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         commentAdapter.notifyItemChanged(position);
                         commentAdapter.notifyItemRangeChanged(position, comments.size());
                         hideKeyboard();
+
+                        if (comments.size() == 0) {
+                            tvNoItem.setVisibility(View.VISIBLE);
+                            rvComment.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvNoItem.setVisibility(View.INVISIBLE);
+                            rvComment.setVisibility(View.VISIBLE);
+                        }
                         break;
                 }
             }
@@ -525,6 +542,13 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         commentAdapter.notifyItemRemoved(position);
                         commentAdapter.notifyItemRangeChanged(position, comments.size());
                         Snackbar.make(getWindow().getDecorView().getRootView(), R.string.delete_comment, Snackbar.LENGTH_LONG).show();
+                        if (comments.size() == 0) {
+                            tvNoItem.setVisibility(View.VISIBLE);
+                            rvComment.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvNoItem.setVisibility(View.INVISIBLE);
+                            rvComment.setVisibility(View.VISIBLE);
+                        }
                         break;
                 }
             }

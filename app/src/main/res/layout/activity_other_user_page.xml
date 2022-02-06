@@ -6,6 +6,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.MyPageFragment">
 
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:background="@drawable/ic_arrow_back"
+        android:padding="10sp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02"
+        app:layout_constraintWidth_percent="0.13" />
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/ib_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ib_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_centerInParent="true"
+        android:background="#C0C0C0"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/sr_refresh"
         android:layout_width="wrap_content"
@@ -13,7 +58,7 @@
         app:layout_constraintBottom_toTopOf="@id/pb_infinite_scroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/guideline4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top"
@@ -224,6 +269,19 @@
                 app:layout_constraintBottom_toBottomOf="@+id/guideline35_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <TextView
+                android:id="@+id/tv_no_item"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="게시글이 없습니다."
+                android:textSize="36sp"
+                android:gravity="center"
+                tools:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline35_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_post"
                 android:layout_width="0dp"
@@ -231,6 +289,7 @@
                 android:splitMotionEvents="false"
                 android:clipToPadding="false"
                 android:paddingBottom="20dp"
+                tools:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline35_horizontal"

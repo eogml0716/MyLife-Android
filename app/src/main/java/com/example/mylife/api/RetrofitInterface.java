@@ -161,29 +161,30 @@ public interface RetrofitInterface {
     /**
      * ------------------------------- category ?. 마이페이지 -------------------------------
      */
-    // TODO: 내가 작성한 게시글 리스트 가져오기 (무한 스크롤링) - 그냥 readPosts랑 합쳐도 될 거 같긴함
-    @GET("/read/profile/mine")
-    Call<Post> readMyPosts(@Header("Cookie") String session,
+    // 프로필 페이지 작성한 게시글 리스트 가져오기 (무한 스크롤링)
+    @GET("/read/profile/posts")
+    Call<Post> readInfoPosts(@Header("Cookie") String session,
                            @Query("user_idx") int userIdx,
+                           @Query("idx") int idx,
                            @Query("page") int page,
                            @Query("limit") int limit);
 
-    // TODO: 다른 사람이 작성한 게시글 리스트 가져오기 (무한 스크롤링)
-    @GET("/read/profile/others")
-    Call<Post> readOtherPosts();
+    // 프로필 가져오기 (1개)
+    @GET("/read/profile/info")
+    Call<User> readInfo(@Header("Cookie") String session,
+                        @Query("user_idx") int userIdx,
+                        @Query("idx") int idx);
 
-    // TODO: 나의 프로필 가져오기 (1개)
-    @GET("/read/profile/me")
-    Call<User> readMe();
-
-    // TODO: 다른 사람의 프로필 가져오기 (1개)
-    @GET("/read/profile/other")
-    Call<User> readOther();
-
-    // TODO: 나의 프로필 수정하기
+    // 나의 프로필 수정하기
     @FormUrlEncoded
     @HTTP(method = "PUT", path = "/update/profile", hasBody = true)
-    Call<User> updateProfile();
+    Call<User> updateProfile(@Header("Cookie") String session,
+                             @Field("user_idx") int userIdx,
+                             @Field("image") String image,
+                             @Field("image_name") String imageName,
+                             @Field("name") String name,
+                             @Field("about_me") String aboutMe,
+                             @Field("is_image_change") boolean isImageChange);
 
     // TODO: 팔로우, 팔로잉 - 좋아요랑 구현 방식이 비슷할 거 같은데
     @FormUrlEncoded

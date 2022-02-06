@@ -209,6 +209,19 @@
                 app:layout_constraintBottom_toBottomOf="@+id/guideline35_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <TextView
+                android:id="@+id/tv_no_item"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="게시글이 없습니다."
+                android:textSize="36sp"
+                android:gravity="center"
+                tools:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline35_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_post"
                 android:layout_width="0dp"
@@ -216,6 +229,7 @@
                 android:splitMotionEvents="false"
                 android:clipToPadding="false"
                 android:paddingBottom="20dp"
+                tools:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline35_horizontal"

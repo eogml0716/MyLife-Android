@@ -45,6 +45,7 @@ import com.example.mylife.util.RetrofitHelper;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,7 +55,6 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.mylife.MyApplication.PROFILE_IMAGE_URL;
-import static com.example.mylife.MyApplication.USER_ABOUT_ME;
 import static com.example.mylife.MyApplication.USER_IDX;
 import static com.example.mylife.MyApplication.USER_NAME;
 import static com.example.mylife.MyApplication.USER_SESSION;
@@ -84,8 +84,11 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
     private boolean isLast;
 
     private CircleImageView ivProfile;
-    private TextView tvPosts, tvPost, tvFollowings, tvFollowing, tvFollowers, tvFollower, tvName, tvAboutMe;
+    private TextView tvPosts, tvPost, tvFollowings, tvFollowing, tvFollowers, tvFollower, tvName, tvAboutMe, tvNoItem;
     private Button btnProfile, btnLogout;
+
+    private String name, profileImageUrl, aboutMe;
+    private int postCount = 0, followerCount = 0, followingCount = 0;
 
     public MyPageFragment() {
         super(R.layout.fragment_my_page);
@@ -106,15 +109,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
         if (networkConnection.checkNetworkConnection(getActivity()) == TYPE_NOT_CONNECTED) {
             dialogHelper.showConfirmDialog((AppCompatActivity) getActivity(), dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
         } else {
-            loadMyPosts(1);
+            loadInfo();
+            loadInfoPosts(1);
         }
-        tvName.setText(USER_NAME);
-        // TODO: 유저의 자기소개까지 SharedPreference에 저장을 해야하나? 어디까지 저장을 해야하지, 그렇다고 이거 하나 때문에 서버 요청 보내는 것도 이상하고...
-        tvAboutMe.setText(USER_ABOUT_ME);
-        ivProfile.post(() -> {
-            ivProfile.setBackground(null); // 배경 이미지 변경
-        });
-        Glide.with(this).load(PROFILE_IMAGE_URL).into(ivProfile);
     }
 
     private void bindView(View v) {
@@ -127,6 +124,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
         tvFollower = v.findViewById(R.id.tv_follower);
         tvName = v.findViewById(R.id.tv_name);
         tvAboutMe = v.findViewById(R.id.tv_about_me);
+        tvNoItem = v.findViewById(R.id.tv_no_item);
         btnProfile = v.findViewById(R.id.btn_profile);
         btnLogout = v.findViewById(R.id.btn_logout);
         rvSquarePost = v.findViewById(R.id.rv_my_post);
@@ -154,7 +152,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
                     if (networkConnection.checkNetworkConnection(getActivity()) == TYPE_NOT_CONNECTED) {
                         dialogHelper.showConfirmDialog((AppCompatActivity) getActivity(), dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
                     } else {
-                        loadMyPosts(page);
+                        loadInfoPosts(page);
                     }
                 }
             }
@@ -228,15 +226,75 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
         int itemCount = posts.size();
         posts.clear();
         squarePostAdapter.notifyItemRangeRemoved(0, itemCount);
-        loadMyPosts(1);
+        loadInfoPosts(1);
     }
 
     /**
      * ------------------------------- category 3. 서버 통신 -------------------------------
      */
-    private void loadMyPosts(int page) {
-        Call<Post> callReadMyPosts = retrofitHelper.getRetrofitInterFace().readMyPosts(USER_SESSION, USER_IDX, page, limit);
-        callReadMyPosts.enqueue(new Callback<Post>() {
+    private void loadInfo() {
+        Call<User> callReadInfo = retrofitHelper.getRetrofitInterFace().readInfo(USER_SESSION, USER_IDX, USER_IDX);
+        callReadInfo.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                pbLoading.setVisibility(View.GONE);
+                switch (response.code()) {
+                    case 400:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        dialogHelper.showConfirmDialog((AppCompatActivity) mContext, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.client_error_message));
+                        break;
+
+                    case 500:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        dialogHelper.showConfirmDialog((AppCompatActivity) mContext, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.server_error_message));
+                        break;
+
+                    case 200:
+                        assert response.body() != null;
+                        name = response.body().getName();
+                        profileImageUrl = response.body().getProfileImageUrl();
+                        aboutMe = response.body().getAboutMe();
+                        postCount = response.body().getPostCount();
+//                        followerCount = response.body().getFollowerCount();
+//                        followingCount = response.body().getFollowingCount();
+
+                        Log.d(TAG, "loadInfo - aboutMe : " + aboutMe);
+                        Log.d(TAG, "loadInfo - postCount : " + postCount);
+//                        Log.d(TAG, "loadInfo - followerCount : " + followerCount);
+//                        Log.d(TAG, "loadInfo - followingCount : " + followingCount);
+
+                        tvName.setText(name);
+                        ivProfile.post(() -> {
+                            ivProfile.setBackground(null); // 배경 이미지 변경
+                        });
+                        Glide.with(mContext).load(profileImageUrl).into(ivProfile);
+                        tvAboutMe.setText(aboutMe);
+                        tvPosts.setText(String.valueOf(postCount));
+//                        tvFollowers.setText(String.valueOf(followerCount));
+//                        tvFollowings.setText(String.valueOf(followingCount));
+                        if (postCount == 0) {
+                            tvNoItem.setVisibility(View.VISIBLE);
+                            rvSquarePost.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvNoItem.setVisibility(View.INVISIBLE);
+                            rvSquarePost.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                Log.e(TAG, "loadInfo - onFailure : " + t.getMessage());
+                pbLoading.setVisibility(View.GONE);
+                dialogHelper.showConfirmDialog((AppCompatActivity) mContext, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.network_not_stable));
+            }
+        });
+    }
+
+    private void loadInfoPosts(int page) {
+        Call<Post> callReadInfoPosts = retrofitHelper.getRetrofitInterFace().readInfoPosts(USER_SESSION, USER_IDX, USER_IDX, page, limit);
+        callReadInfoPosts.enqueue(new Callback<Post>() {
             @Override
             public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
                 srRefresh.setRefreshing(false);

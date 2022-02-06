@@ -13,7 +13,7 @@ public class MyApplication extends Application {
     public static String SERVER_URL; // 서버의 URL
 
     // 유저 관련 변수
-    public static String LOGIN_TYPE, USER_SESSION, USER_NAME, USER_EMAIL, PROFILE_IMAGE_URL, USER_ABOUT_ME;
+    public static String LOGIN_TYPE, USER_SESSION, USER_NAME, USER_EMAIL, PROFILE_IMAGE_URL;
     public static int USER_IDX;
 
     @Override
@@ -32,6 +32,5 @@ public class MyApplication extends Application {
         USER_EMAIL = userPref.getString(getString(R.string.email), null);
         USER_NAME = userPref.getString(getString(R.string.email), null);
         PROFILE_IMAGE_URL = userPref.getString(getString(R.string.profile_image_url), null);
-        USER_ABOUT_ME = userPref.getString(getString(R.string.about_me), null);
     }
 }
