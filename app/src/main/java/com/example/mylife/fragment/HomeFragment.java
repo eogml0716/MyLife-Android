@@ -283,12 +283,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
                         posts.addAll(post.getPosts()); // 서버에서 응답받은 페이지의 리스트에 데이터 추가
                         int totalItemCount = posts.size();
                         postAdapter.notifyItemRangeInserted(startPosition, totalItemCount - startPosition); // 어뎁터에서 추가된 데이터 업데이트
-
+                        Log.d(TAG, "loadPosts - posts.size() : " + posts.size());
                         if (posts.size() == 0) {
                             tvNoItem.setVisibility(View.VISIBLE);
+                            srRefresh.setVisibility(View.INVISIBLE);
                             rvPost.setVisibility(View.INVISIBLE);
                         } else {
                             tvNoItem.setVisibility(View.INVISIBLE);
+                            srRefresh.setVisibility(View.VISIBLE);
                             rvPost.setVisibility(View.VISIBLE);
                         }
                         break;

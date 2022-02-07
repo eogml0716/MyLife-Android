@@ -43,7 +43,7 @@ public class Comment {
 
     // 컨텐츠 아이템 리스트
     @SerializedName("comments")
-    ArrayList<Comment> comments;
+    private ArrayList<Comment> comments;
 
     @SerializedName("is_like")
     private boolean isLike = false;

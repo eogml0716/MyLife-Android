@@ -148,8 +148,19 @@ public interface RetrofitInterface {
      * ------------------------------- category ?. 검색 탭 -------------------------------
      */
     // TODO: 유저 검색
+    @GET("/read/search/users")
+    Call<User> readSearchUsers(@Header("Cookie") String session,
+                               @Query("user_idx") int userIdx,
+                               @Query("page") int page,
+                               @Query("limit") int limit,
+                               @Query("search_word") String searchWord);
 
     // TODO: 게시글 랜덤으로 가져오기 (무한 스크롤링)
+    @GET("/read/search/posts")
+    Call<Post> readSearchPosts(@Header("Cookie") String session,
+                               @Query("user_idx") int userIdx,
+                               @Query("page") int page,
+                               @Query("limit") int limit);
 
     /**
      * ------------------------------- category ?. 알림 탭 관련 -------------------------------
@@ -164,10 +175,10 @@ public interface RetrofitInterface {
     // 프로필 페이지 작성한 게시글 리스트 가져오기 (무한 스크롤링)
     @GET("/read/profile/posts")
     Call<Post> readInfoPosts(@Header("Cookie") String session,
-                           @Query("user_idx") int userIdx,
-                           @Query("idx") int idx,
-                           @Query("page") int page,
-                           @Query("limit") int limit);
+                             @Query("user_idx") int userIdx,
+                             @Query("idx") int idx,
+                             @Query("page") int page,
+                             @Query("limit") int limit);
 
     // 프로필 가져오기 (1개)
     @GET("/read/profile/info")
@@ -186,8 +197,27 @@ public interface RetrofitInterface {
                              @Field("about_me") String aboutMe,
                              @Field("is_image_change") boolean isImageChange);
 
+    // 팔로잉 리스트 가져오기 (무한 스크롤링)
+    @GET("/read/follow/followings")
+    Call<User> readFollowings(@Header("Cookie") String session,
+                              @Query("user_idx") int userIdx,
+                              @Query("idx") int idx,
+                              @Query("page") int page,
+                              @Query("limit") int limit);
+
+    // 팔로워 리스트 가져오기 (무한 스크롤링)
+    @GET("/read/follow/followers")
+    Call<User> readFollowers(@Header("Cookie") String session,
+                             @Query("user_idx") int userIdx,
+                             @Query("idx") int idx,
+                             @Query("page") int page,
+                             @Query("limit") int limit);
+
     // TODO: 팔로우, 팔로잉 - 좋아요랑 구현 방식이 비슷할 거 같은데
     @FormUrlEncoded
     @HTTP(method = "PUT", path = "/update/profile/follow", hasBody = true)
-    Call<User> updateFollow();
+    Call<User> updateFollow(@Header("Cookie") String session,
+                            @Field("user_idx") int userIdx,
+                            @Field("idx") int idx,
+                            @Field("is_follow") boolean isFollow);
 }

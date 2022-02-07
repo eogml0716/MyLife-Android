@@ -3,6 +3,8 @@ package com.example.mylife.item;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class User {
     @SerializedName("user_idx")
     private int userIdx;
@@ -31,6 +33,25 @@ public class User {
     @SerializedName("following_count")
     private int followingCount; // 팔로잉 수
 
+    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
+    @SerializedName("from_user_idx")
+    private int fromUserIdx;
+
+    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
+    @SerializedName("to_user_idx")
+    private int toUserIdx;
+
+    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
+    @SerializedName("followings")
+    private ArrayList<User> followings;
+
+    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
+    @SerializedName("followers")
+    private ArrayList<User> followers;
+
+    @SerializedName("is_follow")
+    private boolean isFollow;
+
     @SerializedName("create_date")
     private String createDate;
 
@@ -39,6 +60,10 @@ public class User {
 
     @SerializedName("delete_date")
     private String deleteDate;
+
+    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
+    @SerializedName("users")
+    private ArrayList<User> users;
 
     public int getUserIdx() {
         return userIdx;
@@ -134,5 +159,53 @@ public class User {
 
     public void setDeleteDate(String deleteDate) {
         this.deleteDate = deleteDate;
+    }
+
+    public int getFromUserIdx() {
+        return fromUserIdx;
+    }
+
+    public void setFromUserIdx(int fromUserIdx) {
+        this.fromUserIdx = fromUserIdx;
+    }
+
+    public int getToUserIdx() {
+        return toUserIdx;
+    }
+
+    public void setToUserIdx(int toUserIdx) {
+        this.toUserIdx = toUserIdx;
+    }
+
+    public ArrayList<User> getFollowings() {
+        return followings;
+    }
+
+    public void setFollowings(ArrayList<User> followings) {
+        this.followings = followings;
+    }
+
+    public ArrayList<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(ArrayList<User> followers) {
+        this.followers = followers;
+    }
+
+    public boolean isFollow() {
+        return isFollow;
+    }
+
+    public void setFollow(boolean follow) {
+        isFollow = follow;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 }

@@ -222,6 +222,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
 
     @Override
     public void onRefresh() {
+        loadInfo();
         infiniteScrollListener.resetState();
         int itemCount = posts.size();
         posts.clear();
@@ -255,13 +256,13 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
                         profileImageUrl = response.body().getProfileImageUrl();
                         aboutMe = response.body().getAboutMe();
                         postCount = response.body().getPostCount();
-//                        followerCount = response.body().getFollowerCount();
-//                        followingCount = response.body().getFollowingCount();
+                        followerCount = response.body().getFollowerCount();
+                        followingCount = response.body().getFollowingCount();
 
                         Log.d(TAG, "loadInfo - aboutMe : " + aboutMe);
                         Log.d(TAG, "loadInfo - postCount : " + postCount);
-//                        Log.d(TAG, "loadInfo - followerCount : " + followerCount);
-//                        Log.d(TAG, "loadInfo - followingCount : " + followingCount);
+                        Log.d(TAG, "loadInfo - followerCount : " + followerCount);
+                        Log.d(TAG, "loadInfo - followingCount : " + followingCount);
 
                         tvName.setText(name);
                         ivProfile.post(() -> {
@@ -270,8 +271,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
                         Glide.with(mContext).load(profileImageUrl).into(ivProfile);
                         tvAboutMe.setText(aboutMe);
                         tvPosts.setText(String.valueOf(postCount));
-//                        tvFollowers.setText(String.valueOf(followerCount));
-//                        tvFollowings.setText(String.valueOf(followingCount));
+                        tvFollowers.setText(String.valueOf(followerCount));
+                        tvFollowings.setText(String.valueOf(followingCount));
                         if (postCount == 0) {
                             tvNoItem.setVisibility(View.VISIBLE);
                             rvSquarePost.setVisibility(View.INVISIBLE);

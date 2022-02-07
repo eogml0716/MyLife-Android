@@ -73,7 +73,10 @@
 
     <string name="update_comment_backpressed">\'뒤로\' 버튼을 한번 더 누르면 수정을 취소합니다.</string>
 
+    <!--============================== 프로필 관련 ==============================-->
     <string name="no_self_introduction">자기 소개가 없습니다.</string>
+    <string name="follow">팔로우 하였습니다.</string>
+    <string name="unfollow">언팔로우 하였습니다.</string>
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 

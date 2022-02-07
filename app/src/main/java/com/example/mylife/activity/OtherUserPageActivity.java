@@ -32,6 +32,7 @@ import com.example.mylife.util.InfiniteScrollListener;
 import com.example.mylife.util.MethodHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +71,7 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
     // 페이징을 위한 변수 : 마지막 페이지인지 확인
     private final int limit = 9;
     private boolean isLast;
+    private boolean isFollow = false;
 
     private CircleImageView ivProfile;
     private TextView tvPosts, tvPost, tvFollowings, tvFollowing, tvFollowers, tvFollower, tvName, tvAboutMe, tvNoItem;
@@ -200,6 +202,18 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
             toFollowIntent.putExtra("user_idx", userIdx);
             toFollowIntent.putExtra("type", "follower");
             startActivity(toFollowIntent);
+        } else if (btnFollow.equals(v) || btnUnFollow.equals(v)) {
+            if (networkConnection.checkNetworkConnection(this) == TYPE_NOT_CONNECTED) {
+                dialogHelper.showConfirmDialog(this, dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
+            } else {
+                if (isFollow) {
+                    isFollow = false;
+                    updateFollow(isFollow);
+                } else {
+                    isFollow = true;
+                    updateFollow(isFollow);
+                }
+            }
         }
     }
 
@@ -244,16 +258,18 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
                         profileImageUrl = response.body().getProfileImageUrl();
                         aboutMe = response.body().getAboutMe();
                         postCount = response.body().getPostCount();
-//                        followerCount = response.body().getFollowerCount();
-//                        followingCount = response.body().getFollowingCount();
+                        followerCount = response.body().getFollowerCount();
+                        followingCount = response.body().getFollowingCount();
+                        isFollow = response.body().isFollow();
 
                         Log.d(TAG, "loadInfo - userIdx : " + userIdx);
                         Log.d(TAG, "loadInfo - name : " + name);
                         Log.d(TAG, "loadInfo - profileImageUrl : " + profileImageUrl);
                         Log.d(TAG, "loadInfo - aboutMe : " + aboutMe);
                         Log.d(TAG, "loadInfo - postCount : " + postCount);
-//                        Log.d(TAG, "loadInfo - followerCount : " + followerCount);
-//                        Log.d(TAG, "loadInfo - followingCount : " + followingCount);
+                        Log.d(TAG, "loadInfo - followerCount : " + followerCount);
+                        Log.d(TAG, "loadInfo - followingCount : " + followingCount);
+                        Log.d(TAG, "loadInfo - isFollow : " + isFollow);
 
                         tvName.setText(name);
                         ivProfile.post(() -> {
@@ -262,8 +278,15 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
                         Glide.with(OtherUserPageActivity.this).load(profileImageUrl).into(ivProfile);
                         tvAboutMe.setText(aboutMe);
                         tvPosts.setText(String.valueOf(postCount));
-//                        tvFollowers.setText(String.valueOf(followerCount));
-//                        tvFollowings.setText(String.valueOf(followingCount));
+                        tvFollowers.setText(String.valueOf(followerCount));
+                        tvFollowings.setText(String.valueOf(followingCount));
+                        if (isFollow) {
+                            btnFollow.setVisibility(View.INVISIBLE);
+                            btnUnFollow.setVisibility(View.VISIBLE);
+                        } else {
+                            btnFollow.setVisibility(View.VISIBLE);
+                            btnUnFollow.setVisibility(View.INVISIBLE);
+                        }
                         if (postCount == 0) {
                             tvNoItem.setVisibility(View.VISIBLE);
                             rvSquarePost.setVisibility(View.INVISIBLE);
@@ -328,6 +351,78 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
                 pbInfiniteScroll.setVisibility(View.GONE);
                 dialogHelper.showConfirmDialog(OtherUserPageActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.network_not_stable));
                 Log.d(TAG, "loadOtherPosts - onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    private void updateFollow(boolean isFollow) {
+        Call<User> callUpdateFollow = retrofitHelper.getRetrofitInterFace().updateFollow(USER_SESSION, USER_IDX, userIdx, isFollow);
+        callUpdateFollow.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                switch (response.code()) {
+                    case 500:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+
+                        // 에러 발생 시 좋아요를 반영하지 않음
+                        if (isFollow) {
+                            btnFollow.setVisibility(View.VISIBLE);
+                            btnUnFollow.setVisibility(View.INVISIBLE);
+                        } else {
+                            btnFollow.setVisibility(View.INVISIBLE);
+                            btnUnFollow.setVisibility(View.VISIBLE);
+                        }
+
+                        dialogHelper.showConfirmDialog(OtherUserPageActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.server_error_message));
+                        break;
+
+                    case 400:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+
+                        // 에러 발생 시 좋아요를 반영하지 않음
+                        if (isFollow) {
+                            btnFollow.setVisibility(View.VISIBLE);
+                            btnUnFollow.setVisibility(View.INVISIBLE);
+                        } else {
+                            btnFollow.setVisibility(View.INVISIBLE);
+                            btnUnFollow.setVisibility(View.VISIBLE);
+                        }
+
+                        dialogHelper.showConfirmDialog(OtherUserPageActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.client_error_message));
+                        break;
+
+                    case 204:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        break;
+
+                    case 200:
+                        Log.d(TAG, "updateFollow - onResponse : " + response);
+                        assert response.body() != null;
+                        boolean isFollow = response.body().isFollow();
+                        int followingCount = response.body().getFollowingCount();
+                        int followerCount = response.body().getFollowerCount();
+
+                        if (isFollow) {
+                            btnFollow.setVisibility(View.INVISIBLE);
+                            btnUnFollow.setVisibility(View.VISIBLE);
+                        } else {
+                            btnFollow.setVisibility(View.VISIBLE);
+                            btnUnFollow.setVisibility(View.INVISIBLE);
+                        }
+                        tvFollowings.setText(String.valueOf(followingCount));
+                        tvFollowers.setText(String.valueOf(followerCount));
+                        if (isFollow) {
+                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.follow, Snackbar.LENGTH_LONG).show();
+                        } else {
+                            Snackbar.make(getWindow().getDecorView().getRootView(), R.string.unfollow, Snackbar.LENGTH_LONG).show();
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                Log.d(TAG, "updateFollow - onFailure : " + t.getMessage());
             }
         });
     }
