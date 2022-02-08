@@ -105,7 +105,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.14" />
 
-    <!-- 게시글 리사이클러뷰의 경우에는 SwipeRefreshLayout 안에 TextView를 넣어도 됐는데 여긴 왜 안되지?-->
+    <!-- TODO: 게시글 리사이클러뷰의 경우에는 SwipeRefreshLayout 안에 TextView를 넣어도 됐는데 여긴 왜 안되지?-->
     <TextView
         android:id="@+id/tv_no_item"
         android:layout_width="match_parent"

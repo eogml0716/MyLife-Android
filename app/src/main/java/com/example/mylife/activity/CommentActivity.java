@@ -362,9 +362,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
                         if (comments.size() == 0) {
                             tvNoItem.setVisibility(View.VISIBLE);
+                            srRefresh.setVisibility(View.INVISIBLE);
                             rvComment.setVisibility(View.INVISIBLE);
                         } else {
                             tvNoItem.setVisibility(View.INVISIBLE);
+                            srRefresh.setVisibility(View.VISIBLE);
                             rvComment.setVisibility(View.VISIBLE);
                         }
                         break;

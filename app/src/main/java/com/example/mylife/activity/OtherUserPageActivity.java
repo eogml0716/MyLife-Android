@@ -223,6 +223,7 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
         int itemCount = posts.size();
         posts.clear();
         squarePostAdapter.notifyItemRangeRemoved(0, itemCount);
+        loadInfo(userIdx);
         loadInfoPosts(1);
     }
 

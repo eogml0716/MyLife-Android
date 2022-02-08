@@ -195,10 +195,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
     public void onClick(View v) {
         if (tvFollowings.equals(v)) {
             Intent toFollowIntent = new Intent(mContext, FollowActivity.class);
+            toFollowIntent.putExtra("user_idx", USER_IDX);
             toFollowIntent.putExtra("type", "following");
             startActivity(toFollowIntent);
         } else if (tvFollowers.equals(v)) {
             Intent toFollowIntent = new Intent(mContext, FollowActivity.class);
+            toFollowIntent.putExtra("user_idx", USER_IDX);
             toFollowIntent.putExtra("type", "follower");
             startActivity(toFollowIntent);
         } else if (btnProfile.equals(v)) {
@@ -273,13 +275,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
                         tvPosts.setText(String.valueOf(postCount));
                         tvFollowers.setText(String.valueOf(followerCount));
                         tvFollowings.setText(String.valueOf(followingCount));
-                        if (postCount == 0) {
-                            tvNoItem.setVisibility(View.VISIBLE);
-                            rvSquarePost.setVisibility(View.INVISIBLE);
-                        } else {
-                            tvNoItem.setVisibility(View.INVISIBLE);
-                            rvSquarePost.setVisibility(View.VISIBLE);
-                        }
                         break;
                 }
             }
@@ -326,6 +321,16 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, It
                         posts.addAll(post.getPosts()); // 서버에서 응답받은 페이지의 리스트에 데이터 추가
                         int totalItemCount = posts.size();
                         squarePostAdapter.notifyItemRangeInserted(startPosition, totalItemCount - startPosition); // 어뎁터에서 추가된 데이터 업데이트
+
+                        if (posts.size() == 0) {
+                            tvNoItem.setVisibility(View.VISIBLE);
+                            srRefresh.setVisibility(View.INVISIBLE);
+                            rvSquarePost.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvNoItem.setVisibility(View.INVISIBLE);
+                            srRefresh.setVisibility(View.VISIBLE);
+                            rvSquarePost.setVisibility(View.VISIBLE);
+                        }
                         break;
                 }
             }
