@@ -77,7 +77,7 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
     private TextView tvPosts, tvPost, tvFollowings, tvFollowing, tvFollowers, tvFollower, tvName, tvAboutMe, tvNoItem;
     private Button btnFollow, btnUnFollow, btnMessage;
 
-    private int userIdx, postCount, followerCount, followingCount;
+    private int userIdx, postCount, followerCount, followingCount, chatRoomIdx;
     private String profileImageUrl, name, aboutMe;
 
     @Override
@@ -214,6 +214,11 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
                     updateFollow(isFollow);
                 }
             }
+        } else if (btnMessage.equals(v)) {
+            Intent toChatIntent = new Intent(this, ChatActivity.class);
+            toChatIntent.putExtra("chat_room_idx", chatRoomIdx);
+            toChatIntent.putExtra("user_idx", userIdx);
+            startActivity(toChatIntent);
         }
     }
 
@@ -262,6 +267,7 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
                         followerCount = response.body().getFollowerCount();
                         followingCount = response.body().getFollowingCount();
                         isFollow = response.body().isFollow();
+                        chatRoomIdx = response.body().getChatRoomIdx();
 
                         Log.d(TAG, "loadInfo - userIdx : " + userIdx);
                         Log.d(TAG, "loadInfo - name : " + name);
@@ -271,6 +277,7 @@ public class OtherUserPageActivity extends AppCompatActivity implements View.OnC
                         Log.d(TAG, "loadInfo - followerCount : " + followerCount);
                         Log.d(TAG, "loadInfo - followingCount : " + followingCount);
                         Log.d(TAG, "loadInfo - isFollow : " + isFollow);
+                        Log.d(TAG, "loadInfo - chatRoomIdx : " + chatRoomIdx);
 
                         tvName.setText(name);
                         ivProfile.post(() -> {

@@ -13,6 +13,9 @@
     <string name="name">name</string>
     <string name="profile_image_url">profile_image_url</string>
 
+    <string name="setting_storage_key">setting</string>
+    <string name="key_firebase_token">firebase_token</string>
+
     <!-- [공통] -->
     <string name="edittext_null">작성하지 않은 항목이 존재합니다.</string>
     <string name="image_null">이미지를 등록해주세요.</string>
@@ -43,6 +46,7 @@
     <string name="login_email">이메일</string>
     <string name="login_password">비밀번호</string>
     <string name="login_success">정상적으로 로그인 되었습니다.</string>
+    <string name="login_fail">로그인 실패 \n아이디 또는 비밀번호를 확인해주세요.</string>
     <string name="already_login_title">다른 계정으로 로그인 해주세요.</string>
     <string name="already_login_message">이미 가입된 계정입니다.\n다른 계정으로 로그인 해주세요.</string>
 
@@ -77,6 +81,10 @@
     <string name="no_self_introduction">자기 소개가 없습니다.</string>
     <string name="follow">팔로우 하였습니다.</string>
     <string name="unfollow">언팔로우 하였습니다.</string>
+
+    <!--============================== 채팅 관련 ==============================-->
+    <string name="chat_contents_guide">채팅 입력…</string>
+    <string name="send">전송</string>
 
     <!--============================== 400, 500 에러 상황 처리 문자열 ==============================-->
 

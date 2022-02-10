@@ -91,7 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/guideline15_horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3_vertical"
-                android:src="@drawable/user_sample_image" />
+                android:src="@drawable/ic_account" />
 
             <TextView
                 android:id="@+id/tv_posts"
@@ -100,7 +100,7 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3_vertical"
                 app:layout_constraintEnd_toEndOf="@+id/guideline55_vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/guideline1_horizontal"
-                android:text="0"
+                tools:text="0"
                 android:textSize="24sp"
                 android:textColor="@color/black" />
 
@@ -119,7 +119,7 @@
                 android:id="@+id/tv_followings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                tools:text="0"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="@+id/guideline55_vertical"
                 app:layout_constraintEnd_toEndOf="@+id/guideline8_vertical"
@@ -141,7 +141,7 @@
                 android:id="@+id/tv_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                tools:text="0"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="@+id/guideline8_vertical"
                 app:layout_constraintEnd_toEndOf="parent"

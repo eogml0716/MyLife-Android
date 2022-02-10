@@ -4,19 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.NotificationFragment">
+    tools:context=".activity.ChatRoomActivity">
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:background="@drawable/ic_arrow_back"
+        android:padding="10sp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02"
+        app:layout_constraintWidth_percent="0.13" />
 
     <TextView
-        android:id="@+id/tv_notification"
+        android:id="@+id/tv_chat_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="알림"
+        android:text="채팅방 목록"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline4"
+        app:layout_constraintBottom_toBottomOf="@id/ib_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/ib_back" />
 
     <View
         android:layout_width="match_parent"
@@ -35,22 +51,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_centerInParent="true"
-        android:background="#C0C0C0"
-        app:layout_constraintBottom_toTopOf="@+id/sr_refresh"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
 
     <!-- TODO: 게시글 리사이클러뷰의 경우에는 SwipeRefreshLayout 안에 TextView를 넣어도 됐는데 여긴 왜 안되지?-->
     <TextView
         android:id="@+id/tv_no_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="알림이 없습니다."
+        android:text="채팅방이 없습니다."
         android:textSize="36sp"
         android:gravity="center"
         tools:visibility="invisible"
@@ -69,13 +76,14 @@
         app:layout_constraintTop_toTopOf="@+id/guideline4">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_notification"
+            android:id="@+id/rv_chat_room"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:splitMotionEvents="false"
             android:clipToPadding="false"
-            android:padding="20dp"
-            tools:listitem="@layout/item_notification"/>
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            tools:listitem="@layout/item_chat_room"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar

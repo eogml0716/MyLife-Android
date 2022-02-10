@@ -40,6 +40,7 @@ import com.example.mylife.util.MethodHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -89,6 +90,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Item
         bindView(view);
         buildRecyclerView();
         setInitData();
+
     }
 
     /**

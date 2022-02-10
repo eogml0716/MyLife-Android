@@ -1,7 +1,10 @@
 package com.example.mylife;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import androidx.annotation.Nullable;
 
@@ -10,10 +13,11 @@ import androidx.annotation.Nullable;
  */
 public class MyApplication extends Application {
     private final String TAG = "MyApplication";
+    public static final String CHANNEL_ID = "RtY9ty36WT0bjpIj29G9u1gJfZhNh9";
     public static String SERVER_URL; // 서버의 URL
 
     // 유저 관련 변수
-    public static String LOGIN_TYPE, USER_SESSION, USER_NAME, USER_EMAIL, PROFILE_IMAGE_URL;
+    public static String LOGIN_TYPE, USER_SESSION, USER_NAME, USER_EMAIL, PROFILE_IMAGE_URL, FIREBASE_TOKEN;
     public static int USER_IDX;
 
     @Override
@@ -32,5 +36,16 @@ public class MyApplication extends Application {
         USER_EMAIL = userPref.getString(getString(R.string.email), null);
         USER_NAME = userPref.getString(getString(R.string.email), null);
         PROFILE_IMAGE_URL = userPref.getString(getString(R.string.profile_image_url), null);
+        FIREBASE_TOKEN = userPref.getString(getString(R.string.key_firebase_token), null);
+    }
+
+    public static String getAppName(Context context) {
+        String appName = "";
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo i = pm.getPackageInfo(context.getPackageName(), 0);
+            appName = i.applicationInfo.loadLabel(pm) + "";
+        } catch(PackageManager.NameNotFoundException e) { }
+        return appName;
     }
 }

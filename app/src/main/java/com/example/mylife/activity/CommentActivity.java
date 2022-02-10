@@ -401,7 +401,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         break;
 
                     case 200:
-                        // TODO: 리사이클러뷰 아이템 추가 관련 메소드로 변경하기
+                        // TODO: 리사이클러뷰 아이템 추가 관련 메소드로 변경하기 - 생성자로 만들어서 return값을 Comment로 해주고 comments에 추가해주면 됨
                         onRefresh();
                         break;
                 }

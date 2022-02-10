@@ -138,6 +138,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         dialogHelper.showConfirmDialog(LoginActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.server_error_message));
                         break;
 
+                    case 204:
+                        dialogHelper.showConfirmDialog(LoginActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.login_fail));
+                        break;
+
                     case 200:
                         // 회원인 경우. 유저 정보를 SharedPreference에 저장한 후 메인 화면으로 이동한다.
                         // SharedPreference에 저장하는 유저 정보 : 로그인 타입, 유저 세션, 유저 인덱스, 유저 이메일, 유저 닉네임, 유저 프로필 이미지 URL

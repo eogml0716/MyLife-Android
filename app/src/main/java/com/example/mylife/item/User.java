@@ -33,13 +33,15 @@ public class User {
     @SerializedName("following_count")
     private int followingCount; // 팔로잉 수
 
-    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
     @SerializedName("from_user_idx")
     private int fromUserIdx;
 
-    // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
     @SerializedName("to_user_idx")
     private int toUserIdx;
+
+    // 해당 유저와 채팅방이 만들어져있는 지 확인하는 용도
+    @SerializedName("chat_room_idx")
+    private int chatRoomIdx;
 
     // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
     @SerializedName("followings")
@@ -48,6 +50,9 @@ public class User {
     // TODO: 따로 Follow 아이템 클래스 하나 파서 따로 빼야하나? 안해도 될 거 같긴함
     @SerializedName("followers")
     private ArrayList<User> followers;
+
+    @SerializedName("firebase_token")
+    private String firebaseToken;
 
     @SerializedName("is_follow")
     private boolean isFollow;
@@ -177,6 +182,14 @@ public class User {
         this.toUserIdx = toUserIdx;
     }
 
+    public int getChatRoomIdx() {
+        return chatRoomIdx;
+    }
+
+    public void setChatRoomIdx(int chatRoomIdx) {
+        this.chatRoomIdx = chatRoomIdx;
+    }
+
     public ArrayList<User> getFollowings() {
         return followings;
     }
@@ -207,5 +220,13 @@ public class User {
 
     public void setUsers(ArrayList<User> users) {
         this.users = users;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 }

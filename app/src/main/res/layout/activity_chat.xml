@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ChatActivity">
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:background="@drawable/ic_arrow_back"
+        android:padding="10sp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02"
+        app:layout_constraintWidth_percent="0.13" />
+
+    <TextView
+        android:id="@+id/tv_chat_room_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="채팅방 이름"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/ib_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ib_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_centerInParent="true"
+        android:background="#C0C0C0"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_centerInParent="true"
+        android:background="#C0C0C0"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_centerInParent="true"
+        android:background="#C0C0C0"
+        app:layout_constraintTop_toBottomOf="@+id/sr_refresh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <!-- TODO: 게시글 리사이클러뷰의 경우에는 SwipeRefreshLayout 안에 TextView를 넣어도 됐는데 여긴 왜 안되지?-->
+    <TextView
+        android:id="@+id/tv_no_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="채팅이 없습니다."
+        android:textSize="36sp"
+        android:gravity="center"
+        tools:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/cl_middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/sr_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/cl_middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_message"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:splitMotionEvents="false"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_comment_box"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_message_left" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_middle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_message"
+        tools:ignore="NotSibling">
+
+        <ImageButton
+            android:id="@+id/ib_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/et_message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.08"
+            app:layout_constraintDimensionRatio="1:1"
+            android:background="@drawable/ic_basic_null_image_small"/>
+
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/chat_contents_guide"
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:scrollHorizontally="false"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="14sp"
+            app:layout_constraintWidth_percent="0.75"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_send"
+            app:layout_constraintStart_toEndOf="@+id/ib_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.widget.Button
+            android:id="@+id/btn_send"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@+id/et_message"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.12" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_infinite_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/cl_middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sr_refresh" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

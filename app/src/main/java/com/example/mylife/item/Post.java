@@ -57,14 +57,14 @@ public class Post {
     // 날짜 변환
     @SuppressLint("SimpleDateFormat")
     public String customizeDate(String strDate) throws ParseException {
-        int SECOND_MILLIS = 1000;
-        int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-        int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-        int DAY_MILLIS = 24 * HOUR_MILLIS;
-        int WEEK_MILLIS = 7 * DAY_MILLIS;
+        final int SECOND_MILLIS = 1000;
+        final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+        final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+        final int DAY_MILLIS = 24 * HOUR_MILLIS;
+        final int WEEK_MILLIS = 7 * DAY_MILLIS;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        SimpleDateFormat newSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat newSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = simpleDateFormat.parse(strDate);
         Date now = Calendar.getInstance().getTime();
         assert date != null;

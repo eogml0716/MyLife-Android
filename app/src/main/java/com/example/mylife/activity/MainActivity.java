@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.mylife.MyApplication;
 import com.example.mylife.R;
@@ -22,15 +26,32 @@ import com.example.mylife.fragment.MyPageFragment;
 import com.example.mylife.fragment.NotificationFragment;
 import com.example.mylife.fragment.PostingFragment;
 import com.example.mylife.fragment.SearchFragment;
+import com.example.mylife.item.User;
 import com.example.mylife.util.DialogHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.mylife.MyApplication.FIREBASE_TOKEN;
+import static com.example.mylife.MyApplication.LOGIN_TYPE;
+import static com.example.mylife.MyApplication.PROFILE_IMAGE_URL;
+import static com.example.mylife.MyApplication.USER_EMAIL;
+import static com.example.mylife.MyApplication.USER_IDX;
+import static com.example.mylife.MyApplication.USER_NAME;
+import static com.example.mylife.MyApplication.USER_SESSION;
 import static com.example.mylife.util.NetworkConnection.TYPE_NOT_CONNECTED;
 
 /**
@@ -68,14 +89,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         setFragment();
         bindView();
+        setInitData();
     }
 
     /**
      * ------------------------------- category 0. 최초 설정 -------------------------------
      */
-    private void setInit() {
+    private void setInitData() {
         bnvMenu = bnvBottom.getMenu();
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
 
+                    // Get new FCM registration token
+                    String token = task.getResult();
+
+                    uploadFirebaseToken(token);
+                });
     }
 
     private void bindView() {
@@ -169,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 notificationFragment = new NotificationFragment();
                 fragmentManager.beginTransaction().add(R.id.fl_middle, notificationFragment).commitAllowingStateLoss();
             } else {
-                fragmentManager.beginTransaction().show(postingFragment).commitAllowingStateLoss();
+                fragmentManager.beginTransaction().show(notificationFragment).commitAllowingStateLoss();
             }
             if (homeFragment != null) fragmentManager.beginTransaction().hide(homeFragment).commitAllowingStateLoss();
             if (searchFragment != null) fragmentManager.beginTransaction().hide(searchFragment).commitAllowingStateLoss();
@@ -193,6 +226,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * ------------------------------- category ?. 서버 통신 -------------------------------
      */
+    private void uploadFirebaseToken(String firebaseToken) {
+        Log.d(TAG, "uploadFirebaseToken - firebaseToken : " + firebaseToken);
+        Call<User> uploadFirebaseToken = retrofitHelper.getRetrofitInterFace().uploadFirebaseToken(USER_SESSION, USER_IDX, firebaseToken);
+        uploadFirebaseToken.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                switch (response.code()) {
+                    case 500:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        dialogHelper.showConfirmDialog(MainActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.server_error_message));
+                        break;
+
+                    case 400:
+                        retrofitHelper.printRetrofitResponse(TAG, response);
+                        dialogHelper.showConfirmDialog(MainActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.client_error_message));
+                        break;
+
+                    case 200:
+                        Log.i(TAG, "uploadFirebaseToken - onResponse : " + response);
+                        assert response.body() != null;
+                        String firebaseToken = response.body().getFirebaseToken();
+
+                        // TODO: 유저 로그인 타입은 자동 로그인, 네이버 로그인, 카카오 로그인 구현하면 다시 건드리기
+                        FIREBASE_TOKEN = firebaseToken;
+
+                        SharedPreferences.Editor editor = getSharedPreferences("auto", Activity.MODE_PRIVATE).edit();
+                        editor.putString(getString(R.string.key_firebase_token), FIREBASE_TOKEN);
+                        editor.apply();
+
+                        Log.d(TAG, "uploadFirebaseToken - FIREBASE_TOKEN : " + FIREBASE_TOKEN);
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<User> call, Throwable t) {
+                Log.e(TAG, "uploadFirebaseToken onFailure : " + t.toString());
+                dialogHelper.showConfirmDialog(MainActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.network_not_stable));
+            }
+        });
+    }
 
     /**
      * ------------------------------- category ?. 유틸리티 -------------------------------
