@@ -42,6 +42,7 @@ import com.example.mylife.util.MethodHelper;
 import com.example.mylife.util.NetworkConnection;
 import com.example.mylife.util.RetrofitHelper;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -62,7 +63,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.mylife.MyApplication.PROFILE_IMAGE_URL;
 import static com.example.mylife.MyApplication.USER_IDX;
+import static com.example.mylife.MyApplication.USER_NAME;
 import static com.example.mylife.MyApplication.USER_SESSION;
 import static com.example.mylife.util.NetworkConnection.TYPE_NOT_CONNECTED;
 
@@ -80,7 +83,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayoutManager layoutManager;
     private ArrayList<Message> messages;
     private MessageAdapter messageAdapter;
-    private InfiniteScrollListener infiniteScrollListener;
 
     private ImageButton ibBack, ibImage;
     private TextView tvChatRoomName, tvNoItem;
@@ -147,6 +149,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         //상대방의 대화를 받기 위한 스레트를 생성 및 실행
         connectionThread = new Thread(new ConnectionThread());
         connectionThread.start();
+        // TODO: 최초 연결 시 chatRoomIdx 값을 보내야함, 그래야지 처음 메시지를 받을 수 있음
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("message_idx", 0);
+        jsonObject.addProperty("chat_room_idx", chatRoomIdx);
+        jsonObject.addProperty("message_type", "CONNECT");
+
+        String connectJsonString = new Gson().toJson(jsonObject);
+        new Thread(new SenderThread(connectJsonString)).start();
         // TODO: 그룹 채팅방 구현 관련 내용 (채팅방 멤버들은 list에 담아서 처리를 해주어야할 거 같다. 채팅방 type값을 가져와서 처리를 해주는 건 필요없는 게 어차피 상대 프로필 들어가서 누르는 건 무조건 1:1 채팅이니까
     }
 
@@ -189,38 +199,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         messageAdapter = new MessageAdapter(this, messages, this);
-        infiniteScrollListener = new InfiniteScrollListener(layoutManager, 4) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView recyclerView) {
-                if (responseCode == 200) {
-                    if (networkConnection.checkNetworkConnection(ChatActivity.this) == TYPE_NOT_CONNECTED) {
-                        dialogHelper.showConfirmDialog(ChatActivity.this, dialogHelper.ACTIVITY_FINISH_DIALOG_ID, getString(R.string.no_connected_network));
-                    } else {
-                        loadMessages(page);
-                    }
-                }
-            }
-
-            @Override
-            public void onLastVisibleItemPosition(int lastVisibleItemPosition) {
-                if (responseCode == 200) {
-                    int lastItemPosition = messages.size() - 1;
-                    if (srRefresh.isRefreshing()) return;
-                    if (lastItemPosition == lastVisibleItemPosition)
-                        pbInfiniteScroll.setVisibility(View.VISIBLE);
-                }
-            }
-        };
         RecyclerView.ItemAnimator animator = rvMessage.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
         rvMessage.setLayoutManager(layoutManager);
         rvMessage.setAdapter(messageAdapter);
-        rvMessage.addOnScrollListener(infiniteScrollListener);
         rvMessage.smoothScrollToPosition(messages.size());
     }
-
 
     /**
      * ------------------------------- category 1. 뷰 리스너 -------------------------------
@@ -247,7 +233,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRefresh() {
-        infiniteScrollListener.resetState();
         int itemCount = messages.size();
         messages.clear();
         messageAdapter.notifyItemRangeRemoved(0, itemCount);
@@ -332,22 +317,25 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                         Message message = response.body();
                         responseCode = 200;
                         assert message != null;
-                        if (message.getUserIdx() == USER_IDX) {
-                            if (message.getMessageType().equals("TEXT")) {
-                                message.setMessageLocation(MessageLocation.RIGHT_CONTENTS);
-                            } else if (message.getMessageType().equals("IMAGE")) {
-                                message.setMessageLocation(MessageLocation.RIGHT_IMAGE);
-                            }
-                        } else {
-                            if (message.getMessageType().equals("TEXT")) {
-                                message.setMessageLocation(MessageLocation.LEFT_CONTENTS);
-                            } else if (message.getMessageType().equals("IMAGE")) {
-                                message.setMessageLocation(MessageLocation.LEFT_IMAGE);
+                        for (int index = 0; index < message.getMessages().size(); index++) {
+                            if (message.getMessages().get(index).getUserIdx() == USER_IDX) {
+                                if (message.getMessages().get(index).getMessageType().equals("TEXT")) {
+                                    message.getMessages().get(index).setMessageLocation(MessageLocation.RIGHT_CONTENTS);
+                                } else if (message.getMessages().get(index).getMessageType().equals("IMAGE")) {
+                                    message.getMessages().get(index).setMessageLocation(MessageLocation.RIGHT_IMAGE);
+                                }
+                            } else {
+                                if (message.getMessages().get(index).getMessageType().equals("TEXT")) {
+                                    message.getMessages().get(index).setMessageLocation(MessageLocation.LEFT_CONTENTS);
+                                } else if (message.getMessages().get(index).getMessageType().equals("IMAGE")) {
+                                    message.getMessages().get(index).setMessageLocation(MessageLocation.LEFT_IMAGE);
+                                }
                             }
                         }
                         messages.addAll(message.getMessages()); // 서버에서 응답받은 페이지의 리스트에 데이터 추가
                         messageAdapter.notifyItemRangeInserted(0, messages.size()); // 어뎁터에서 추가된 데이터 업데이트
 
+                        // TODO: 새로 아이템 갯수가 갱신 되어도 계속해서 tvNoItem이 뜨는 경우가 있어서 해놓음, 코드 간소화 시키기
                         if (messages.size() == 0) {
                             tvNoItem.setVisibility(View.VISIBLE);
                             srRefresh.setVisibility(View.INVISIBLE);
@@ -377,7 +365,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         callCreateChatPersonalRoom.enqueue(new Callback<ChatRoom>() {
             @Override
             public void onResponse(@NotNull Call<ChatRoom> call, @NotNull Response<ChatRoom> response) {
-                dialogHelper.dismissLoading();
+                srRefresh.setRefreshing(false);
+                pbLoading.setVisibility(View.GONE);
+                pbInfiniteScroll.setVisibility(View.GONE);
 
                 switch (response.code()) {
                     case 400:
@@ -409,6 +399,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             public void onFailure(@NotNull Call<ChatRoom> call, @NotNull Throwable t) {
                 Log.e(TAG, "uploadPost - callCreatePost failed : " + t.getMessage());
                 dialogHelper.showConfirmDialog(ChatActivity.this, dialogHelper.NO_LISTENER_DIALOG_ID, getString(R.string.network_not_stable));
+                srRefresh.setRefreshing(false);
+                pbLoading.setVisibility(View.GONE);
+                pbInfiniteScroll.setVisibility(View.GONE);
             }
         });
     }
@@ -432,34 +425,26 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     case 200:
                         Message message = response.body();
                         assert message != null;
-                        if (message.getUserIdx() == USER_IDX) {
-                            message.setMessageLocation(MessageLocation.RIGHT_CONTENTS);
-                        } else {
-                            message.setMessageLocation(MessageLocation.LEFT_CONTENTS);
-                        }
-                        try {
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("message_idx", message.getMessageIdx());
-                            jsonObject.put("chat_room_idx", message.getChatRoomIdx());
-                            jsonObject.put("user_idx", message.getUserIdx());
-                            jsonObject.put("name", message.getName());
-                            jsonObject.put("profile_image_url", message.getProfileImageUrl());
-                            jsonObject.put("message_type", message.getMessageType());
-                            jsonObject.put("contents", message.getContents());
-                            jsonObject.put("create_date", message.getCreateDate());
-                            jsonObject.put("update_date", message.getUpdateDate());
+                        message.setMessageLocation(MessageLocation.RIGHT_CONTENTS);
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("message_idx", message.getMessageIdx());
+                        jsonObject.addProperty("chat_room_idx", message.getChatRoomIdx());
+                        jsonObject.addProperty("user_idx", message.getUserIdx());
+                        jsonObject.addProperty("name", message.getName());
+                        jsonObject.addProperty("profile_image_url", message.getProfileImageUrl());
+                        jsonObject.addProperty("message_type", message.getMessageType());
+                        jsonObject.addProperty("contents", message.getContents());
+                        jsonObject.addProperty("create_date", message.getCreateDate());
+                        jsonObject.addProperty("update_date", message.getUpdateDate());
 
-                            Gson gson = new Gson();
-                            String jsonString = gson.toJson(jsonObject);
-                            new Thread(new SenderThread(jsonString)).start();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        String jsonString = new Gson().toJson(jsonObject);
+                        new Thread(new SenderThread(jsonString)).start();
                         messages.add(message);
                         messageAdapter.notifyDataSetChanged();
                         rvMessage.smoothScrollToPosition(messages.size());
                         etMessage.setText("");
 
+                        // TODO: 새로 아이템 갯수가 갱신 되어도 계속해서 tvNoItem이 뜨는 경우가 있어서 해놓음, 코드 간소화 시키기
                         if (messages.size() == 0) {
                             tvNoItem.setVisibility(View.VISIBLE);
                             srRefresh.setVisibility(View.INVISIBLE);
@@ -512,29 +497,20 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     case 200:
                         Message message = response.body();
                         assert message != null;
-                        if (message.getUserIdx() == USER_IDX) {
-                            message.setMessageLocation(MessageLocation.RIGHT_IMAGE);
-                        } else {
-                            message.setMessageLocation(MessageLocation.LEFT_IMAGE);
-                        }
-                        try {
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("message_idx", message.getMessageIdx());
-                            jsonObject.put("chat_room_idx", message.getChatRoomIdx());
-                            jsonObject.put("user_idx", message.getUserIdx());
-                            jsonObject.put("name", message.getName());
-                            jsonObject.put("profile_image_url", message.getProfileImageUrl());
-                            jsonObject.put("message_type", message.getMessageType());
-                            jsonObject.put("contents", message.getContents());
-                            jsonObject.put("create_date", message.getCreateDate());
-                            jsonObject.put("update_date", message.getUpdateDate());
+                        message.setMessageLocation(MessageLocation.RIGHT_IMAGE);
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("message_idx", message.getMessageIdx());
+                        jsonObject.addProperty("chat_room_idx", message.getChatRoomIdx());
+                        jsonObject.addProperty("user_idx", message.getUserIdx());
+                        jsonObject.addProperty("name", message.getName());
+                        jsonObject.addProperty("profile_image_url", message.getProfileImageUrl());
+                        jsonObject.addProperty("message_type", message.getMessageType());
+                        jsonObject.addProperty("contents", message.getContents());
+                        jsonObject.addProperty("create_date", message.getCreateDate());
+                        jsonObject.addProperty("update_date", message.getUpdateDate());
 
-                            Gson gson = new Gson();
-                            String jsonString = gson.toJson(jsonObject);
-                            new Thread(new SenderThread(jsonString)).start();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        String jsonString = new Gson().toJson(jsonObject);
+                        new Thread(new SenderThread(jsonString)).start();
                         messages.add(message);
                         messageAdapter.notifyDataSetChanged();
                         rvMessage.smoothScrollToPosition(messages.size());
@@ -660,7 +636,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "registerForActivityResult - imageUri : " + imageUri);
             Bitmap uploadImage = null;
             try {
-                uploadImage = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), imageUri));
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), imageUri);
+                uploadImage = ImageDecoder.decodeBitmap(source);
             } catch (IOException e) {
                 e.printStackTrace();
             }

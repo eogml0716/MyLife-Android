@@ -26,6 +26,7 @@ import com.example.mylife.fragment.MyPageFragment;
 import com.example.mylife.fragment.NotificationFragment;
 import com.example.mylife.fragment.PostingFragment;
 import com.example.mylife.fragment.SearchFragment;
+import com.example.mylife.item.ChatRoom;
 import com.example.mylife.item.User;
 import com.example.mylife.util.DialogHelper;
 import com.example.mylife.util.NetworkConnection;
@@ -155,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
            // TODO: 로고 클릭 시 뭐할 지 생각 중
         } else if (ibChat.equals(v)) {
             // TODO: 채팅 클릭 시 채팅방 화면으로 넘어감
+            Intent toChatRoomIntent = new Intent(this, ChatRoomActivity.class);
+            startActivity(toChatRoomIntent);
         }
     }
 

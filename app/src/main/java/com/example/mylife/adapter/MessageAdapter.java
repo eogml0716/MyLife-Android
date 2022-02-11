@@ -47,9 +47,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case RIGHT_CONTENTS:
                 return new RightViewHolder(inflater.inflate(R.layout.item_message_right, parent, false));
             case LEFT_IMAGE:
-                return new RightViewHolder(inflater.inflate(R.layout.item_image_left, parent, false));
+                return new LeftImageViewHolder(inflater.inflate(R.layout.item_image_left, parent, false));
             case RIGHT_IMAGE:
-                return new RightViewHolder(inflater.inflate(R.layout.item_image_right, parent, false));
+                return new RightImageViewHolder(inflater.inflate(R.layout.item_image_right, parent, false));
             default:
                 return new CenterViewHolder(inflater.inflate(R.layout.item_message_center, parent, false));
         }

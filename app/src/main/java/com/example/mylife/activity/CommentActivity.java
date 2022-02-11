@@ -187,7 +187,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
-//        rvCommunity.setHasFixedSize(true);
         rvComment.setLayoutManager(layoutManager);
         rvComment.setAdapter(commentAdapter);
         rvComment.addOnScrollListener(infiniteScrollListener);

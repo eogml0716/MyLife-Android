@@ -52,7 +52,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvNoItem;
 
     private RecyclerView rvChatRoom;
-    private LinearLayoutManager layoutManager;
     private ArrayList<ChatRoom> chatRooms;
     private ChatRoomAdapter chatRoomAdapter;
     private InfiniteScrollListener infiniteScrollListener;
@@ -64,7 +63,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment);
+        setContentView(R.layout.activity_chat_room);
         bindView();
         buildRecyclerView();
         setInitData();
@@ -95,10 +94,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
     private void buildRecyclerView() {
         chatRooms = new ArrayList<>();
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        layoutManager.setReverseLayout(false);
-        layoutManager.setStackFromEnd(false);
         chatRoomAdapter = new ChatRoomAdapter(this, chatRooms, this);
         infiniteScrollListener = new InfiniteScrollListener(layoutManager, 4) {
             @Override

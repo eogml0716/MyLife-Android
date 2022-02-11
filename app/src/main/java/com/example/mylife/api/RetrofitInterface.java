@@ -265,22 +265,22 @@ public interface RetrofitInterface {
                                           @Field("user_idx") int userIdx,
                                           @Field("idx") int idx);
 
-    // TODO: 텍스트 메시지 저장하기
+    // 텍스트 메시지 저장하기
     @FormUrlEncoded
     @POST("/create/chat/text_message")
     Call<Message> createChatTextMessage(@Header("Cookie") String session,
-                                         @Field("user_idx") int userIdx,
-                                         @Field("chat_room_idx") int chatRoomIdx,
-                                         @Field("contents") String contents);
+                                        @Field("user_idx") int userIdx,
+                                        @Field("chat_room_idx") int chatRoomIdx,
+                                        @Field("contents") String contents);
 
     // TODO: 이미지 메시지 저장하기
     @FormUrlEncoded
     @POST("/create/chat/image_message")
     Call<Message> createChatImageMessage(@Header("Cookie") String session,
-                                        @Field("user_idx") int userIdx,
-                                        @Field("chat_room_idx") int chatRoomIdx,
-                                        @Field("image") String image,
-                                        @Field("image_name") String imageName);
+                                         @Field("user_idx") int userIdx,
+                                         @Field("chat_room_idx") int chatRoomIdx,
+                                         @Field("image") String image,
+                                         @Field("image_name") String imageName);
 
     // TODO: 1:1 채팅방 openType 바꾸기, 근데 채팅방을 나가게 되면 기존 채팅내역도 다 삭제를 해주어야하는데 그냥 단순 삭제 해버리면, 안 나간 사람도 나간 사람의 채팅이 삭제되게 되는건데 이거 어떻게 처리할 지도 생각해보기
     // TODO: 이거 근데 단순히 채팅방 타입은 OPEN에서 CLOSE로 바꿔버리면 채팅방 숨기기를 원하지 않는 사용자까지 숨기기 처리가 되는데?....
