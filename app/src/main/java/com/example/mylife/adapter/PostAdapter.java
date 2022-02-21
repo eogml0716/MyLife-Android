@@ -120,7 +120,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder>  {
             ivProfile = itemView.findViewById(R.id.iv_profile);
             tvName = itemView.findViewById(R.id.tv_name);
             tvUploadDate = itemView.findViewById(R.id.tv_upload_date);
-            tvLike = itemView.findViewById(R.id.tv_like);
+//            tvLike = itemView.findViewById(R.id.tv_like);
             tvLikeCount = itemView.findViewById(R.id.tv_like_count);
             tvCommentCount = itemView.findViewById(R.id.tv_comment_count);
             ibThreeDots = itemView.findViewById(R.id.ib_threedots);
@@ -132,7 +132,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder>  {
             pbLoading = itemView.findViewById(R.id.pb_loading);
 
             tvName.setOnClickListener(this);
-            tvLike.setOnClickListener(this);
+//            tvLike.setOnClickListener(this);
             ibThreeDots.setOnClickListener(this);
             ivComment.setOnClickListener(this);
             ivShare.setOnClickListener(this);

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -45,6 +46,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,7 +86,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Message> messages;
     private MessageAdapter messageAdapter;
 
-    private ImageButton ibBack, ibImage;
+    private ImageButton ibBack, ibImage, ibVideoCall;
     private TextView tvChatRoomName, tvNoItem;
     private EditText etMessage;
     private Button btnSend;
@@ -121,12 +123,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void setInitData() {
         String index = Build.ID;
-        if (index.equals("RSR1.210210.001.A1")) {
-            // 애뮬레이터일 때
+        Log.e(TAG, "setInitData - index : " + index);
+        if (index.equals("RP1A.200720.012")) {
+            host = "192.168.0.20";
+        } else {
             host = "10.0.2.2";
-        } else if (index.equals("RP1A.200720.012")) {
-            // 기존 디바이스 계정일 때
-            host = "192.168.0.21";
         }
 
         // 1:1 채팅방 구현 관련 내용
@@ -156,6 +157,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         jsonObject.addProperty("message_type", "CONNECT");
 
         String connectJsonString = new Gson().toJson(jsonObject);
+        Log.e(TAG, "setInitData - connectJsonString : " + connectJsonString);
         new Thread(new SenderThread(connectJsonString)).start();
         // TODO: 그룹 채팅방 구현 관련 내용 (채팅방 멤버들은 list에 담아서 처리를 해주어야할 거 같다. 채팅방 type값을 가져와서 처리를 해주는 건 필요없는 게 어차피 상대 프로필 들어가서 누르는 건 무조건 1:1 채팅이니까
     }
@@ -163,6 +165,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private void bindView() {
         ibBack = findViewById(R.id.ib_back);
         ibImage = findViewById(R.id.ib_image);
+        ibVideoCall = findViewById(R.id.ib_video_call);
         tvChatRoomName = findViewById(R.id.tv_chat_room_name);
         tvNoItem = findViewById(R.id.tv_no_item);
         etMessage = findViewById(R.id.et_message);
@@ -174,6 +177,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         ibBack.setOnClickListener(this);
         ibImage.setOnClickListener(this);
+        ibVideoCall.setOnClickListener(this);
         btnSend.setOnClickListener(this);
         srRefresh.setOnRefreshListener(this);
 
@@ -228,6 +232,21 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             if (!contents.isEmpty()) {
                 createTextMessage(contents);
             }
+        } else if (ibVideoCall.equals(v)) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("message_idx", 0);
+            jsonObject.addProperty("chat_room_idx", chatRoomIdx);
+            jsonObject.addProperty("user_idx", USER_IDX);
+            jsonObject.addProperty("name", USER_NAME);
+            jsonObject.addProperty("message_type", "VIDEO_CALL");
+
+            String jsonString = new Gson().toJson(jsonObject);
+            new Thread(new SenderThread(jsonString)).start();
+
+            Intent toConnectIntent = new Intent(this,ConnectActivity.class);
+            toConnectIntent.putExtra("chat_room_idx", chatRoomIdx);
+            toConnectIntent.putExtra("user_idx", userIdx);
+            startActivity(toConnectIntent);
         }
     }
 
@@ -571,23 +590,33 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     if (!jsonMessage.isEmpty()) {
                         Gson gson = new Gson();
                         Message message = gson.fromJson(jsonMessage, Message.class);
+
                         runOnUiThread(() -> {
-                            if (message.getUserIdx() == USER_IDX) {
-                                if (message.getMessageType().equals("TEXT")) {
-                                    message.setMessageLocation(MessageLocation.RIGHT_CONTENTS);
-                                } else if (message.getMessageType().equals("IMAGE")) {
-                                    message.setMessageLocation(MessageLocation.RIGHT_IMAGE);
-                                }
+                            // 영상통화 요청이 온 경우 CallActivity (통화 대기 Activity로 넘어간다.)
+                            if (message.getMessageType().equals("VIDEO_CALL")) {
+                                Intent toCallIntent = new Intent(ChatActivity.this, CallActivity.class);
+                                toCallIntent.putExtra("chat_room_idx", message.getChatRoomIdx());
+                                toCallIntent.putExtra("user_idx", message.getUserIdx());
+                                toCallIntent.putExtra("name", message.getName());
+                                startActivity(toCallIntent);
                             } else {
-                                if (message.getMessageType().equals("TEXT")) {
-                                    message.setMessageLocation(MessageLocation.LEFT_CONTENTS);
-                                } else if (message.getMessageType().equals("IMAGE")) {
-                                    message.setMessageLocation(MessageLocation.LEFT_IMAGE);
+                                if (message.getUserIdx() == USER_IDX) {
+                                    if (message.getMessageType().equals("TEXT")) {
+                                        message.setMessageLocation(MessageLocation.RIGHT_CONTENTS);
+                                    } else if (message.getMessageType().equals("IMAGE")) {
+                                        message.setMessageLocation(MessageLocation.RIGHT_IMAGE);
+                                    }
+                                } else {
+                                    if (message.getMessageType().equals("TEXT")) {
+                                        message.setMessageLocation(MessageLocation.LEFT_CONTENTS);
+                                    } else if (message.getMessageType().equals("IMAGE")) {
+                                        message.setMessageLocation(MessageLocation.LEFT_IMAGE);
+                                    }
                                 }
+                                messages.add(message);
+                                messageAdapter.notifyDataSetChanged();
+                                rvMessage.smoothScrollToPosition(messages.size());
                             }
-                            messages.add(message);
-                            messageAdapter.notifyDataSetChanged();
-                            rvMessage.smoothScrollToPosition(messages.size());
                         });
                     } else {
                         Log.e(TAG, "ReceiverThread - else :  connectionThread = new Thread(new ConnectionThread());");

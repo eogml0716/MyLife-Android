@@ -433,8 +433,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     case 200:
                         Snackbar.make(getWindow().getDecorView().getRootView(), R.string.update_comment, Snackbar.LENGTH_LONG).show();
                         isEdit = true;
-                        etComment.setText("");
-                        btnSend.setText("등록");
                         // TODO: 이게 굳이 필요할까?, 클라이언트에서 일단 바꿔두고 나중에 새로고침하면 서버꺼 받아오고 대충 이런식인가
                         comments.get(position).setContents(contents);
                         commentAdapter.notifyItemChanged(position);
@@ -448,6 +446,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                             tvNoItem.setVisibility(View.INVISIBLE);
                             rvComment.setVisibility(View.VISIBLE);
                         }
+
+                        etComment.setText("");
+                        btnSend.setText("등록");
                         break;
                 }
             }

@@ -2,6 +2,8 @@ package com.example.mylife.item;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 
 public class Message {
@@ -14,24 +16,31 @@ public class Message {
     @SerializedName("user_idx")
     private int userIdx;
 
+    @Nullable
     @SerializedName("name")
     private String name;
 
+    @Nullable
     @SerializedName("profile_image_url")
     private String profileImageUrl;
 
+    @Nullable
     @SerializedName("message_type")
     private String messageType;
 
+    @Nullable
     @SerializedName("contents")
     private String contents;
 
+    @Nullable
     @SerializedName("create_date")
     private String createDate;
 
+    @Nullable
     @SerializedName("update_date")
     private String updateDate;
 
+    @Nullable
     @SerializedName("delete_date")
     private String deleteDate;
 

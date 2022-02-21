@@ -94,7 +94,7 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
         ivProfile = findViewById(R.id.iv_profile);
         tvName = findViewById(R.id.tv_name);
         tvUploadDate = findViewById(R.id.tv_upload_date);
-        tvLike = findViewById(R.id.tv_like);
+//        tvLike = findViewById(R.id.tv_like);
         tvLikeCount = findViewById(R.id.tv_like_count);
         tvCommentCount = findViewById(R.id.tv_comment_count);
         ibThreeDots = findViewById(R.id.ib_threedots);
@@ -108,7 +108,7 @@ public class OnePostActivity extends AppCompatActivity implements View.OnClickLi
         /* 리스너 관련 */
         ibBack.setOnClickListener(this);
         tvName.setOnClickListener(this);
-        tvLike.setOnClickListener(this);
+//        tvLike.setOnClickListener(this);
         ibThreeDots.setOnClickListener(this);
         ivComment.setOnClickListener(this);
         ivShare.setOnClickListener(this);
