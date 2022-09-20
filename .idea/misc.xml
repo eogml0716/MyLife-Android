@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2085" />
+        <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable-v24/ic_threedots.xml" value="0.2085" />
+        <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable-v24/push_icon.xml" value="0.2085" />
+        <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable/cb_like.xml" value="0.2085" />
         <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable/dialog_shape_design.xml" value="0.1" />
+        <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable/et_default_design.xml" value="0.2085" />
+        <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2085" />
         <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/layout/activity_call.xml" value="0.2" />
         <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="..\:/Users/RYU/AndroidStudioProjects/MyLife/app/src/main/res/layout/activity_comment.xml" value="0.1864864864864865" />
