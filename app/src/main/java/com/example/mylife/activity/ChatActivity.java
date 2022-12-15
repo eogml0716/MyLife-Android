@@ -96,7 +96,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     // 페이징을 위한 변수 : 마지막 페이지인지 확인
     private final int limit = 10;
 
-    private int chatRoomIdx, userIdx;
+    private int chatRoomIdx = 0;
+    private int userIdx;
     private String type, chatRoomImageUrl, chatRoomName, openType, lastMessage, lastMessageDate;
 
     private final int port = 1755;
@@ -124,14 +125,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private void setInitData() {
         String index = Build.ID;
         Log.e(TAG, "setInitData - index : " + index);
-        if (index.equals("RP1A.200720.012")) {
+        if (index.equals("SP1A.210812.016")) {
             host = "192.168.0.20";
         } else {
             host = "10.0.2.2";
         }
 
         // 1:1 채팅방 구현 관련 내용
-        chatRoomIdx = getIntent().getIntExtra("chat_room_idx", 0);
+//        chatRoomIdx = getIntent().getIntExtra("chat_room_idx", 0);
+        chatRoomIdx = getIntent().getIntExtra("chat_room_idx", chatRoomIdx);
         userIdx = getIntent().getIntExtra("user_idx", 0); // 1:1 채팅방에서 상대방의 유저 인덱스
 
         if (networkConnection.checkNetworkConnection(this) == TYPE_NOT_CONNECTED) {

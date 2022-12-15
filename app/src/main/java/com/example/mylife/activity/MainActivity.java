@@ -249,10 +249,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case 200:
                         Log.i(TAG, "uploadFirebaseToken - onResponse : " + response);
                         assert response.body() != null;
-                        String firebaseToken = response.body().getFirebaseToken();
 
                         // TODO: 유저 로그인 타입은 자동 로그인, 네이버 로그인, 카카오 로그인 구현하면 다시 건드리기
-                        FIREBASE_TOKEN = firebaseToken;
+                        FIREBASE_TOKEN = response.body().getFirebaseToken();
 
                         SharedPreferences.Editor editor = getSharedPreferences("auto", Activity.MODE_PRIVATE).edit();
                         editor.putString(getString(R.string.key_firebase_token), FIREBASE_TOKEN);
